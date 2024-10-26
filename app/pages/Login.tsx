@@ -15,7 +15,6 @@ import { useFonts } from "expo-font";
 import LoginStyles from "../../styles/Login/LoginStyles";
 import GlobalStyles from "../../styles/GlobalStyles";
 
-import Header from "../../components/Header";
 import { logIn } from "../../components/Users";
 
 interface userInfo {
@@ -73,6 +72,7 @@ export default function Profile() {
           source={require("../../assets/icons/png/mail.png")}
         />
         <TextInput
+          blurOnSubmit={false}
           style={LoginStyles.input}
           placeholder="Type your e-mail"
           placeholderTextColor={"rgb(165, 165, 165)"}

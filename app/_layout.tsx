@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import Header from "@/components/Header";
+import Header from "../components/Header";
 import { View } from "react-native";
 
 const RootLayout = () => {
@@ -7,7 +7,7 @@ const RootLayout = () => {
     headerShown: false,
   };
   return (
-    <View>
+    <>
       <Stack>
         <Stack.Screen name="index" options={settings} />
         <Stack.Screen name="pages/Catalog" options={settings} />
@@ -17,7 +17,7 @@ const RootLayout = () => {
         <Stack.Screen name="pages/Profile" options={settings} />
       </Stack>
       <Header />
-    </View>
+    </>
   );
 };
 
