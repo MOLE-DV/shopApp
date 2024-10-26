@@ -7,6 +7,7 @@ import {
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 
 export async function logIn(email: string, password: string) {
+  console.log(`Logging in with email: ${email} and password: ${password}`);
   try {
     const response = await signInWithEmailAndPassword(
       FIREBASE_AUTH,
@@ -18,8 +19,14 @@ export async function logIn(email: string, password: string) {
     if (user) {
       await SecureStore.setItemAsync("userToken", user.uid);
     }
+    console.log(`Logged in as ${email}`);
     return true;
-  } catch (err) {
+  } catch (err: any) {
+    if (
+      err.toString().split("/")[1].replace(").", "") === "invalid-credential"
+    ) {
+      return "invalid-credential";
+    }
     console.error("Failed to log in", err);
     return false;
   }
@@ -50,7 +57,18 @@ export async function logOut() {
   await SecureStore.deleteItemAsync("userToken");
 }
 
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 export async function isLoggedIn() {
-  const userToken = await SecureStore.getItemAsync("userToken");
-  return !!userToken;
+  const auth = getAuth();
+
+  return new Promise((resolve) => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        resolve({ loggedIn: true, email: user.email });
+      } else {
+        resolve({ loggedIn: false, email: null });
+      }
+    });
+  });
 }

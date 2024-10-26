@@ -5,6 +5,7 @@ import {
   TextInput,
   Image,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { isLoggedIn } from "../../components/Users";
 import { useState, useEffect, useCallback } from "react";
@@ -16,8 +17,17 @@ import GlobalStyles from "../../styles/GlobalStyles";
 
 import Header from "../../components/Header";
 import { logIn } from "../../components/Users";
+
+interface userInfo {
+  loggedIn: boolean;
+  email: string | null;
+}
 export default function Profile() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState<userInfo>({
+    loggedIn: false,
+    email: null,
+  });
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -28,24 +38,27 @@ export default function Profile() {
   });
 
   useEffect(() => {
-    async function checkIfLoggedIn() {
-      const loggedInStatus = await isLoggedIn();
-      setLoggedIn(loggedInStatus);
+    async function fetchUserInfo() {
+      const userStatus = await isLoggedIn();
+      setUserInfo(userStatus as userInfo);
     }
-    checkIfLoggedIn();
+
+    fetchUserInfo();
   }, []);
 
-  if (loggedIn) router.push("/pages/Profile");
-
-  if (!fontsLoaded) {
-    return <Text>Loading...</Text>;
-  }
-
-  const loginbuttonHandler = () => {
+  const loginbuttonHandler = async () => {
     if (email.length == 0 || password.length == 0) {
       alert("Email and password cannot be empty!");
     }
-    logIn(email, password);
+    const response = await logIn(email, password);
+
+    if (response && response !== "invalid-credential") {
+      router.push("/pages/Profile");
+    }
+
+    if (response == "invalid-credential") {
+      Alert.alert("Wrong e-mail or password!");
+    }
   };
 
   return (

@@ -8,6 +8,7 @@ import {
   FlatList,
 } from "react-native";
 import { router } from "expo-router";
+import { useState, useEffect } from "react";
 
 import GlobalStyles from "../styles/GlobalStyles";
 import MainStyles from "../styles/Main/MainStyles";
@@ -15,10 +16,25 @@ import MainStyles from "../styles/Main/MainStyles";
 import Header from "../components/Header";
 import Fetch from "../components/FetchData";
 
+interface Item {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+  price: string;
+}
 export default function App() {
-  //FIXME: Napraw pobieranie danych z firebase
-  // const data = Fetch();
+  const [data, setData] = useState<Item[]>([]);
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const items = await Fetch();
+      if (items) {
+        setData(items);
+      }
+    };
+    fetchData();
+  }, []);
   return (
     <SafeAreaView style={GlobalStyles.androidSafeArea}>
       <View style={MainStyles.searchBarContainer}>

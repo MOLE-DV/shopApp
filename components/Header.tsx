@@ -24,29 +24,49 @@ export default function Header(props: any) {
     <View style={HeaderStyles.header}>
       <ImageButton
         image={props.selected === "main" ? images.houseOpen : images.house}
-        style={HeaderStyles.imageButton}
+        style={
+          props.selected === "main"
+            ? HeaderStyles.imageButtonSelected
+            : HeaderStyles.imageButton
+        }
         onPress={() => router.push("/")}
       />
       <ImageButton
         image={
           props.selected === "search" ? images.catalogOpen : images.catalog
         }
-        style={HeaderStyles.imageButton}
+        style={
+          props.selected === "search"
+            ? HeaderStyles.imageButtonSelected
+            : HeaderStyles.imageButton
+        }
         onPress={() => router.push("/pages/Catalog")}
       />
       <ImageButton
         image={props.selected === "followed" ? images.heartOpen : images.heart}
-        style={HeaderStyles.imageButton}
+        style={
+          props.selected === "followed"
+            ? HeaderStyles.imageButtonSelected
+            : HeaderStyles.imageButton
+        }
         onPress={() => router.push("/pages/Followed")}
       />
       <ImageButton
         image={props.selected === "messages" ? images.mailOpen : images.mail}
-        style={HeaderStyles.imageButton}
+        style={
+          props.selected === "messages"
+            ? HeaderStyles.imageButtonSelected
+            : HeaderStyles.imageButton
+        }
         onPress={() => router.push("/pages/Messages")}
       />
       <ImageButton
         image={props.selected === "profile" ? images.userOpen : images.user}
-        style={HeaderStyles.imageButton}
+        style={
+          props.selected === "profile"
+            ? HeaderStyles.imageButtonSelected
+            : HeaderStyles.imageButton
+        }
         onPress={() => router.push("/pages/Profile")}
       />
     </View>

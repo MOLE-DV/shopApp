@@ -26,8 +26,8 @@ export default StyleSheet.create({
   },
   welcomeText: {
     fontSize: 20,
-    marginTop: 10,
-    marginLeft: 20,
+    marginTop: 20,
+    marginLeft: 10,
     color: "black",
   },
   loginContainer: {
