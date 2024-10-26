@@ -27,8 +27,17 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-build-properties",
+      [
+        "expo-font",
+        {
+          "fonts": ["./assets/fonts/Extra-Days.otf"]
+        }
+      ]
     ],
+    "extra": {
+      "firebaseStorageUrl": "gs://shopapplication-57342.appspot.com/"
+    },
     "experiments": {
       "typedRoutes": true
     }
