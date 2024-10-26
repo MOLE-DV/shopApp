@@ -7,7 +7,6 @@ export default function Followed() {
   return (
     <SafeAreaView style={GlobalStyles.androidSafeArea}>
       <Text>Followed tab</Text>
-      <Header selected="followed" />
     </SafeAreaView>
   );
 }

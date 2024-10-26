@@ -7,7 +7,7 @@ import {
   Image,
   FlatList,
 } from "react-native";
-import { router } from "expo-router";
+import { router, useRootNavigationState } from "expo-router";
 import { useState, useEffect } from "react";
 
 import GlobalStyles from "../styles/GlobalStyles";
@@ -82,8 +82,6 @@ export default function App() {
           </TouchableOpacity>
         )}
       />
-
-      <Header selected="main"></Header>
     </SafeAreaView>
   );
 }

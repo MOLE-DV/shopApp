@@ -7,7 +7,6 @@ export default function Messages() {
   return (
     <SafeAreaView style={GlobalStyles.androidSafeArea}>
       <Text>Messages Tab</Text>
-      <Header selected="messages" />
     </SafeAreaView>
   );
 }

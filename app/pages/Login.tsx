@@ -8,7 +8,7 @@ import {
   Alert,
 } from "react-native";
 import { isLoggedIn } from "../../components/Users";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import { router } from "expo-router";
 import { useFonts } from "expo-font";
 
@@ -61,6 +61,8 @@ export default function Profile() {
     }
   };
 
+  if (!fontsLoaded) return;
+
   return (
     <SafeAreaView style={GlobalStyles.androidSafeArea}>
       <Text style={LoginStyles.loginText}>Login</Text>
@@ -99,7 +101,6 @@ export default function Profile() {
       >
         <Text style={LoginStyles.loginButtonText}>Sign in</Text>
       </TouchableOpacity>
-      <Header selected="profile" />
     </SafeAreaView>
   );
 }

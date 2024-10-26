@@ -7,7 +7,6 @@ export default function Catalog() {
   return (
     <SafeAreaView style={GlobalStyles.androidSafeArea}>
       <Text>Hello World!</Text>
-      <Header selected="search" />
     </SafeAreaView>
   );
 }

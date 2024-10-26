@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, Image } from "react-native";
-import { router } from "expo-router";
+import { useState } from "react";
+import { router, Href, useRootNavigationState } from "expo-router";
 
 import GlobalStyles from "../styles/GlobalStyles";
 import HeaderStyles from "../styles/Header/HeaderStyles";
@@ -7,6 +8,12 @@ import HeaderStyles from "../styles/Header/HeaderStyles";
 import ImageButton from "../components/ImageButton";
 
 export default function Header(props: any) {
+  const [selected, setSelected] = useState<string>("main");
+
+  const rootNavigationState = useRootNavigationState();
+
+  if (!rootNavigationState?.key) return null;
+
   let images = {
     house: require("../assets/icons/png/house.png"),
     houseOpen: require("../assets/icons/png/house_open.png"),
@@ -20,54 +27,57 @@ export default function Header(props: any) {
     userOpen: require("../assets/icons/png/user_open.png"),
   };
 
+  function pressHandler(buttonType: string, path: Href<string>) {
+    router.push(path);
+    setSelected(buttonType);
+  }
+
   return (
     <View style={HeaderStyles.header}>
       <ImageButton
-        image={props.selected === "main" ? images.houseOpen : images.house}
+        image={selected === "main" ? images.houseOpen : images.house}
         style={
-          props.selected === "main"
+          selected === "main"
             ? HeaderStyles.imageButtonSelected
             : HeaderStyles.imageButton
         }
-        onPress={() => router.push("/")}
+        onPress={() => pressHandler("main", "/")}
       />
       <ImageButton
-        image={
-          props.selected === "search" ? images.catalogOpen : images.catalog
-        }
+        image={selected === "search" ? images.catalogOpen : images.catalog}
         style={
-          props.selected === "search"
+          selected === "search"
             ? HeaderStyles.imageButtonSelected
             : HeaderStyles.imageButton
         }
-        onPress={() => router.push("/pages/Catalog")}
+        onPress={() => pressHandler("search", "/pages/Catalog")}
       />
       <ImageButton
-        image={props.selected === "followed" ? images.heartOpen : images.heart}
+        image={selected === "followed" ? images.heartOpen : images.heart}
         style={
-          props.selected === "followed"
+          selected === "followed"
             ? HeaderStyles.imageButtonSelected
             : HeaderStyles.imageButton
         }
-        onPress={() => router.push("/pages/Followed")}
+        onPress={() => pressHandler("followed", "/pages/Followed")}
       />
       <ImageButton
-        image={props.selected === "messages" ? images.mailOpen : images.mail}
+        image={selected === "messages" ? images.mailOpen : images.mail}
         style={
-          props.selected === "messages"
+          selected === "messages"
             ? HeaderStyles.imageButtonSelected
             : HeaderStyles.imageButton
         }
-        onPress={() => router.push("/pages/Messages")}
+        onPress={() => pressHandler("messages", "/pages/Messages")}
       />
       <ImageButton
-        image={props.selected === "profile" ? images.userOpen : images.user}
+        image={selected === "profile" ? images.userOpen : images.user}
         style={
-          props.selected === "profile"
+          selected === "profile"
             ? HeaderStyles.imageButtonSelected
             : HeaderStyles.imageButton
         }
-        onPress={() => router.push("/pages/Profile")}
+        onPress={() => pressHandler("profile", "/pages/Profile")}
       />
     </View>
   );

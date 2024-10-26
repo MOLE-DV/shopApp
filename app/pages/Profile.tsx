@@ -71,7 +71,6 @@ export default function Profile() {
       >
         <Text>Log out</Text>
       </TouchableOpacity>
-      <Header selected="profile" />
     </SafeAreaView>
   );
 }
