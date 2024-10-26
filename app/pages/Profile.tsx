@@ -57,7 +57,10 @@ export default function Profile() {
               <Text style={ProfileStyles.loginButtonText}>Login</Text>
             </TouchableOpacity>
             <Text style={ProfileStyles.separator}>/</Text>
-            <TouchableOpacity style={ProfileStyles.loginButton}>
+            <TouchableOpacity
+              style={ProfileStyles.loginButton}
+              onPress={() => router.push("/pages/SignUp")}
+            >
               <Text style={ProfileStyles.loginButtonText}>Sign up</Text>
             </TouchableOpacity>
           </View>

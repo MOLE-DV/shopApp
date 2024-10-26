@@ -21,7 +21,7 @@ interface userInfo {
   loggedIn: boolean;
   email: string | null;
 }
-export default function Login() {
+export default function SignUp() {
   const [userInfo, setUserInfo] = useState<userInfo | {}>({});
 
   const [email, setEmail] = useState("");
@@ -69,7 +69,7 @@ export default function Login() {
 
   return (
     <SafeAreaView style={GlobalStyles.androidSafeArea}>
-      <Text style={LoginStyles.loginText}>Login</Text>
+      <Text style={LoginStyles.loginText}>Sign up</Text>
       <View style={LoginStyles.inputContainer}>
         <Text style={LoginStyles.label}>E-mail</Text>
         <Image
@@ -98,14 +98,11 @@ export default function Login() {
           secureTextEntry={true}
         />
       </View>
-      <TouchableOpacity style={LoginStyles.forgotPasswordContainer}>
-        <Text style={LoginStyles.forgotPasswordText}>Forgot password?</Text>
-      </TouchableOpacity>
       <TouchableOpacity
         style={LoginStyles.loginButtonContainer}
         onPress={loginbuttonHandler}
       >
-        <Text style={LoginStyles.loginButtonText}>Sign in</Text>
+        <Text style={LoginStyles.loginButtonText}>Sign up</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
