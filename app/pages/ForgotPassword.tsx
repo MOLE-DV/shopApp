@@ -18,6 +18,7 @@ import ItemsStyles from "@/styles/Items/ItemsStyles";
 
 import { resetPassword } from "../../components/UserAuthentication";
 import ImageButton from "@/components/ImageButton";
+import KeyboardAvoidingContainer from "@/components/KeyboardAvoidingContainer";
 
 interface userInfo {
   loggedIn: boolean;
@@ -51,19 +52,21 @@ export default function ForgotPassword() {
   if (!fontsLoaded) return;
 
   return (
-    <SafeAreaView style={GlobalStyles.androidSafeArea}>
-      <View style={ItemsStyles.topNavBar}>
-        <View style={[ItemsStyles.topNavBarBackground]} />
+    <KeyboardAvoidingContainer>
+      <View style={LoginStyles.topNavBar}>
+        <View style={[LoginStyles.topNavBarBackground]} />
         <ImageButton
           style={{
-            ...ItemsStyles.topNavBarIcon,
+            ...LoginStyles.topNavBarIcon,
             tintColor: "rgba(0, 0, 0, 0.5)",
           }}
           image={require("../../assets/icons/png/left.png")}
           onPress={() => router.back()}
         />
       </View>
-      <Text style={LoginStyles.loginText}>Password Reset</Text>
+      <Text style={{ ...LoginStyles.loginText, fontSize: 30 }}>
+        Password Reset
+      </Text>
       <View style={LoginStyles.inputContainer}>
         <Text style={LoginStyles.label}>E-mail</Text>
         <Image
@@ -84,6 +87,6 @@ export default function ForgotPassword() {
       >
         <Text style={LoginStyles.loginButtonText}>Reset Password</Text>
       </TouchableOpacity>
-    </SafeAreaView>
+    </KeyboardAvoidingContainer>
   );
 }
