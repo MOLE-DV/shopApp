@@ -13,8 +13,10 @@ const RootLayout = () => {
         <Stack.Screen name="pages/Catalog" options={settings} />
         <Stack.Screen name="pages/Followed" options={settings} />
         <Stack.Screen name="pages/Login" options={settings} />
+        <Stack.Screen name="pages/SignUp" options={settings} />
         <Stack.Screen name="pages/Messages" options={settings} />
         <Stack.Screen name="pages/Profile" options={settings} />
+        <Stack.Screen name="pages/items/[id]" options={settings} />
       </Stack>
       <Header />
     </>

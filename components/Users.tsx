@@ -8,6 +8,13 @@ import { FIREBASE_AUTH } from "../FirebaseConfig";
 
 export async function logIn(email: string, password: string) {
   console.log(`Logging in with email: ${email} and password: ${password}`);
+
+  if (
+    email.replace(/\s/g, "").length === 0 &&
+    password.replace(/\s/g, "").length === 0
+  ) {
+    return "empty-data";
+  }
   try {
     const response = await signInWithEmailAndPassword(
       FIREBASE_AUTH,
@@ -22,11 +29,15 @@ export async function logIn(email: string, password: string) {
     console.log(`Logged in as ${email}`);
     return true;
   } catch (err: any) {
-    if (
-      err.toString().split("/")[1].replace(").", "") === "invalid-credential"
-    ) {
-      return "invalid-credential";
+    switch (err.toString().split("/")[1].replace(").", "")) {
+      case "invalid-credential":
+        return "invalid-credential";
+      case "invalid-email":
+        return "invalid-email";
+      case "missing-password":
+        return "missing-password";
     }
+
     console.error("Failed to log in", err);
     return false;
   }
