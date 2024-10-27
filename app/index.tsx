@@ -7,13 +7,12 @@ import {
   Image,
   FlatList,
 } from "react-native";
-import { router, useRootNavigationState } from "expo-router";
+import { router } from "expo-router";
 import { useState, useEffect } from "react";
 
 import GlobalStyles from "../styles/GlobalStyles";
 import MainStyles from "../styles/Main/MainStyles";
 
-import Header from "../components/Header";
 import Fetch from "../components/FetchData";
 
 interface Item {

@@ -7,15 +7,17 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { isLoggedIn } from "../../components/Users";
+import { isLoggedIn } from "../../components/UserAuthentication";
 import { useState, useEffect } from "react";
 import { router } from "expo-router";
 import { useFonts } from "expo-font";
 
 import LoginStyles from "../../styles/Login/LoginStyles";
 import GlobalStyles from "../../styles/GlobalStyles";
+import ItemsStyles from "@/styles/Items/ItemsStyles";
 
-import { logIn } from "../../components/Users";
+import { logIn } from "../../components/UserAuthentication";
+import ImageButton from "@/components/ImageButton";
 
 interface userInfo {
   loggedIn: boolean;
@@ -69,6 +71,17 @@ export default function Login() {
 
   return (
     <SafeAreaView style={GlobalStyles.androidSafeArea}>
+      <View style={ItemsStyles.topNavBar}>
+        <View style={[ItemsStyles.topNavBarBackground]} />
+        <ImageButton
+          style={{
+            ...ItemsStyles.topNavBarIcon,
+            tintColor: "rgba(0, 0, 0, 0.5)",
+          }}
+          image={require("../../assets/icons/png/left.png")}
+          onPress={() => router.back()}
+        />
+      </View>
       <Text style={LoginStyles.loginText}>Login</Text>
       <View style={LoginStyles.inputContainer}>
         <Text style={LoginStyles.label}>E-mail</Text>
@@ -98,7 +111,18 @@ export default function Login() {
           secureTextEntry={true}
         />
       </View>
-      <TouchableOpacity style={LoginStyles.forgotPasswordContainer}>
+      <TouchableOpacity
+        style={LoginStyles.forgotPasswordContainer}
+        onPress={() => router.push("/pages/SignUp")}
+      >
+        <Text style={LoginStyles.forgotPasswordText}>
+          I don't have an account
+        </Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={LoginStyles.forgotPasswordContainer}
+        onPress={() => router.push("/pages/ForgotPassword")}
+      >
         <Text style={LoginStyles.forgotPasswordText}>Forgot password?</Text>
       </TouchableOpacity>
       <TouchableOpacity

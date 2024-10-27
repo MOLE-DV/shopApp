@@ -5,7 +5,7 @@ export default StyleSheet.create({
     fontFamily: "ExtraDays",
     fontSize: 40,
     marginBottom: 50,
-    marginTop: 50,
+    marginTop: 100,
     marginLeft: 20,
     color: "black",
   },

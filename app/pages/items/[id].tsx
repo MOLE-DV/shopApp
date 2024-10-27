@@ -13,7 +13,6 @@ import {
 import { useLocalSearchParams } from "expo-router";
 import { router } from "expo-router";
 
-import Header from "../../../components/Header";
 import ImageButton from "../../../components/ImageButton";
 
 import GlobalStyles from "../../../styles/GlobalStyles";
@@ -137,7 +136,6 @@ export default function Item() {
           </View>
         </View>
       </ScrollView>
-      <Header selected="search" />
     </SafeAreaView>
   );
 }

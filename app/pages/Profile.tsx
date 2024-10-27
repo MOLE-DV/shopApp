@@ -11,9 +11,7 @@ import { router } from "expo-router";
 import ProfileStyles from "../../styles/Profile/ProfileStyles";
 import GlobalStyles from "../../styles/GlobalStyles";
 
-import { isLoggedIn, logOut } from "@/components/Users";
-
-import Header from "../../components/Header";
+import { isLoggedIn, logOut } from "@/components/UserAuthentication";
 
 interface userInfo {
   loggedIn: boolean;
