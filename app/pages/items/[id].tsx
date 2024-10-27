@@ -73,22 +73,22 @@ export default function Item() {
   };
 
   const favoriteButtonHandler = async () => {
-    try {
-      switch (isFavorite) {
-        case true:
-          favoritedItems.splice(
-            favoritedItems.indexOf({ id: itemId, title: title }),
-            1
-          );
-          break;
-        case false:
-          favoritedItems.push({ id: itemId, title: title });
-          break;
-      }
-      setToFavorite(!isFavorite);
-    } catch (error) {
-      console.error("Failed to save item to favorites", error);
-    }
+    // try {
+    //   switch (isFavorite) {
+    //     case true:
+    //       favoritedItems.splice(
+    //         favoritedItems.indexOf({ id: itemId, title: title }),
+    //         1
+    //       );
+    //       break;
+    //     case false:
+    //       favoritedItems.push({ id: itemId, title: title });
+    //       break;
+    //   }
+    //   setToFavorite(!isFavorite);
+    // } catch (error) {
+    //   console.error("Failed to save item to favorites", error);
+    // }
   };
 
   return (

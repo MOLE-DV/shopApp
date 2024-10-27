@@ -4,14 +4,15 @@ export default StyleSheet.create({
   loginText: {
     fontFamily: "ExtraDays",
     fontSize: 40,
-    marginBottom: 50,
-    marginTop: 100,
+    marginBottom: 30,
+    marginTop: 50,
     marginLeft: 20,
     color: "black",
   },
   inputContainer: {
     width: Dimensions.get("window").width,
     paddingHorizontal: Dimensions.get("window").width / 10,
+    marginTop: 0,
   },
   label: {
     fontSize: 15,
@@ -47,6 +48,7 @@ export default StyleSheet.create({
     right: 40,
   },
   loginButtonContainer: {
+    marginTop: 15,
     width:
       Dimensions.get("window").width -
       (Dimensions.get("window").width / 10) * 2,
@@ -62,5 +64,28 @@ export default StyleSheet.create({
     textTransform: "uppercase",
     fontSize: 18,
     letterSpacing: 2,
+  },
+  topNavBar: {
+    position: "absolute",
+    zIndex: 1,
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 60,
+    paddingTop: 10,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  topNavBarIcon: {
+    tintColor: "white",
+    height: 40,
+    width: 40,
+    marginHorizontal: 20,
+  },
+  topNavBarBackground: {
+    position: "absolute",
+    width: "100%",
+    height: 60,
   },
 });

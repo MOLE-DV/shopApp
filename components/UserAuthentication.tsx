@@ -4,6 +4,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
   sendPasswordResetEmail,
+  updateProfile,
 } from "firebase/auth";
 import { FIREBASE_AUTH } from "../FirebaseConfig";
 
@@ -44,7 +45,12 @@ export async function logIn(email: string, password: string) {
   }
 }
 
-export async function signUp(email: string, password: string) {
+export async function signUp(
+  email: string,
+  password: string,
+  firstname: string,
+  surname: string
+) {
   console.log(`Signing up with email: ${email} and password: ${password}`);
 
   if (
@@ -54,6 +60,13 @@ export async function signUp(email: string, password: string) {
     return "empty-data";
   }
   try {
+    if (
+      surname.replaceAll(/\s/g, "").length === 0 ||
+      firstname.replaceAll(/\s/g, "").length === 0
+    ) {
+      return "empty-data";
+    }
+
     const response = await createUserWithEmailAndPassword(
       FIREBASE_AUTH,
       email,
@@ -64,6 +77,11 @@ export async function signUp(email: string, password: string) {
     if (user) {
       await SecureStore.setItemAsync("userToken", user.uid);
     }
+
+    await updateProfile(user, {
+      displayName: `${firstname} ${surname}`,
+    });
+
     console.log(`Created account of email: ${email}`);
     return true;
   } catch (err: any) {
@@ -96,9 +114,13 @@ export async function isLoggedIn() {
   return new Promise((resolve) => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        resolve({ loggedIn: true, email: user.email });
+        resolve({
+          loggedIn: true,
+          email: user.email,
+          displayName: user.displayName,
+        });
       } else {
-        resolve({ loggedIn: false, email: null });
+        resolve({ loggedIn: false, email: null, displayName: null });
       }
     });
   });

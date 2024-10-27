@@ -31,9 +31,7 @@
       [
         "expo-font",
         {
-          "fonts": [
-            "./assets/fonts/Extra-Days.otf"
-          ]
+          "fonts": ["./assets/fonts/Extra-Days.otf"]
         }
       ],
       "expo-secure-store"

@@ -58,7 +58,7 @@ export default StyleSheet.create({
   topNavBar: {
     position: "absolute",
     zIndex: 1,
-    top: 0,
+    top: 35,
     left: 0,
     right: 0,
     height: 60,
@@ -69,8 +69,8 @@ export default StyleSheet.create({
   },
   topNavBarIcon: {
     tintColor: "white",
-    height: 40,
-    width: 40,
+    height: 30,
+    width: 30,
     marginHorizontal: 20,
   },
   topNavBarBackground: {

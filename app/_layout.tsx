@@ -1,7 +1,7 @@
 import { Stack } from "expo-router";
 import Header from "../components/Header";
-import { View } from "react-native";
-
+import { Dimensions, SafeAreaView } from "react-native";
+import GlobalStyles from "@/styles/GlobalStyles";
 const RootLayout = () => {
   const settings = {
     headerShown: false,
@@ -19,7 +19,15 @@ const RootLayout = () => {
         <Stack.Screen name="pages/Profile" options={settings} />
         <Stack.Screen name="pages/items/[id]" options={settings} />
       </Stack>
-      <Header />
+      <SafeAreaView
+        style={{
+          height: Dimensions.get("window").height + 35,
+          width: Dimensions.get("window").width,
+          position: "absolute",
+        }}
+      >
+        <Header />
+      </SafeAreaView>
     </>
   );
 };

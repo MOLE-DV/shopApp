@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { isLoggedIn } from "../../components/UserAuthentication";
 import { useState, useEffect } from "react";
@@ -14,10 +15,10 @@ import { useFonts } from "expo-font";
 
 import LoginStyles from "../../styles/Login/LoginStyles";
 import GlobalStyles from "../../styles/GlobalStyles";
-import ItemsStyles from "@/styles/Items/ItemsStyles";
 
 import { logIn } from "../../components/UserAuthentication";
 import ImageButton from "@/components/ImageButton";
+import KeyboardAvoidingContainer from "@/components/KeyboardAvoidingContainer";
 
 interface userInfo {
   loggedIn: boolean;
@@ -25,6 +26,7 @@ interface userInfo {
 }
 export default function Login() {
   const [userInfo, setUserInfo] = useState<userInfo | {}>({});
+  const [loaded, setLoaded] = useState(true);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -45,23 +47,24 @@ export default function Login() {
   }, []);
 
   const loginbuttonHandler = async () => {
+    setLoaded(false);
     const response = await logIn(email, password);
 
     switch (response) {
       case "invalid-credential":
-        Alert.alert("Wrong password! Please try again.");
+        Alert.alert("Wrong password", "Wrong password! Please try again.");
         break;
       case "empty-data":
-        Alert.alert("Please fill in all the fields!");
+        Alert.alert("Empty fields", "Please fill in all the fields!");
         break;
       case "invalid-email":
-        Alert.alert("Invalid e-mail! Please try again.");
+        Alert.alert("Invalid e-mail", "Invalid e-mail! Please try again.");
         break;
       case "missing-password":
-        Alert.alert("Password field is required");
+        Alert.alert("Missing password", "Password field is required");
         break;
     }
-
+    setLoaded(true);
     if (response === true) {
       router.push("/pages/Profile");
     }
@@ -70,12 +73,18 @@ export default function Login() {
   if (!fontsLoaded) return;
 
   return (
-    <SafeAreaView style={GlobalStyles.androidSafeArea}>
-      <View style={ItemsStyles.topNavBar}>
-        <View style={[ItemsStyles.topNavBarBackground]} />
+    <KeyboardAvoidingContainer>
+      <ActivityIndicator
+        size="large"
+        style={GlobalStyles.activityIndicator}
+        color="rgb(105, 64, 255)"
+        animating={!loaded}
+      />
+      <View style={LoginStyles.topNavBar}>
+        <View style={[LoginStyles.topNavBarBackground]} />
         <ImageButton
           style={{
-            ...ItemsStyles.topNavBarIcon,
+            ...LoginStyles.topNavBarIcon,
             tintColor: "rgba(0, 0, 0, 0.5)",
           }}
           image={require("../../assets/icons/png/left.png")}
@@ -131,6 +140,6 @@ export default function Login() {
       >
         <Text style={LoginStyles.loginButtonText}>Sign in</Text>
       </TouchableOpacity>
-    </SafeAreaView>
+    </KeyboardAvoidingContainer>
   );
 }

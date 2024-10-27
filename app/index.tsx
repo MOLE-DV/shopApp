@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
+  ActivityIndicator,
 } from "react-native";
 import { router } from "expo-router";
 import { useState, useEffect } from "react";
@@ -24,18 +25,26 @@ interface Item {
 }
 export default function App() {
   const [data, setData] = useState<Item[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       const items = await Fetch();
       if (items) {
         setData(items);
+        setLoaded(true);
       }
     };
     fetchData();
   }, []);
   return (
     <SafeAreaView style={GlobalStyles.androidSafeArea}>
+      <ActivityIndicator
+        size="large"
+        style={GlobalStyles.activityIndicator}
+        color="rgb(105, 64, 255)"
+        animating={!loaded}
+      />
       <View style={MainStyles.searchBarContainer}>
         <TouchableOpacity
           style={MainStyles.searchBarInputContainer}
@@ -54,6 +63,7 @@ export default function App() {
         style={MainStyles.itemsList}
         contentContainerStyle={MainStyles.flatListContainerStyle}
         data={data}
+        columnWrapperStyle={MainStyles.columnWrapperContainer}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={MainStyles.listItem}
@@ -75,7 +85,8 @@ export default function App() {
               source={{ uri: item.icon }}
             />
             <Text style={MainStyles.listItemText}>
-              {item.title}{" "}
+              {item.title}
+              {"\n"}
               <Text style={MainStyles.listItemTextPrice}>{item.price}</Text>
             </Text>
           </TouchableOpacity>
