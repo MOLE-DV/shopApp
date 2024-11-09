@@ -1,6 +1,7 @@
-import { View, Text, TouchableOpacity, Image } from "react-native";
-import { useState } from "react";
+import { View, Animated } from "react-native";
+import { useState, useEffect, useRef } from "react";
 import { router, Href, useRootNavigationState } from "expo-router";
+import { Keyboard } from "react-native";
 
 import GlobalStyles from "../styles/GlobalStyles";
 import HeaderStyles from "../styles/Header/HeaderStyles";
@@ -11,6 +12,25 @@ export default function Header(props: any) {
   const [selected, setSelected] = useState<string>("main");
 
   const rootNavigationState = useRootNavigationState();
+
+  const fadeAnim = useRef(new Animated.Value(0)).current;
+  const animationDuration = 200;
+
+  const fadeOut = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 80,
+      duration: animationDuration,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const fadeIn = () => {
+    Animated.timing(fadeAnim, {
+      toValue: 0,
+      duration: animationDuration,
+      useNativeDriver: true,
+    }).start();
+  };
 
   if (!rootNavigationState?.key) return null;
 
@@ -32,8 +52,30 @@ export default function Header(props: any) {
     setSelected(buttonType);
   }
 
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        fadeOut();
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        fadeIn();
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
+
   return (
-    <View style={HeaderStyles.header}>
+    <Animated.View
+      style={{ ...HeaderStyles.header, transform: [{ translateY: fadeAnim }] }}
+    >
       <ImageButton
         image={selected === "main" ? images.houseOpen : images.house}
         style={
@@ -79,6 +121,6 @@ export default function Header(props: any) {
         }
         onPress={() => pressHandler("profile", "/pages/Profile")}
       />
-    </View>
+    </Animated.View>
   );
 }

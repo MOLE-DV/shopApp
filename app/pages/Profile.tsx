@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
+import React from "react";
 import { useEffect, useState } from "react";
 import { router } from "expo-router";
 import { useFonts } from "expo-font";

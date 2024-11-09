@@ -1,11 +1,14 @@
 import { Stack } from "expo-router";
+import React from "react";
 import Header from "../components/Header";
 import { Dimensions, SafeAreaView } from "react-native";
 import GlobalStyles from "@/styles/GlobalStyles";
+import KeyboardAvoidingContainer from "@/components/KeyboardAvoidingContainer";
 const RootLayout = () => {
   const settings = {
     headerShown: false,
   };
+
   return (
     <>
       <Stack>
@@ -19,15 +22,7 @@ const RootLayout = () => {
         <Stack.Screen name="pages/Profile" options={settings} />
         <Stack.Screen name="pages/items/[id]" options={settings} />
       </Stack>
-      <SafeAreaView
-        style={{
-          height: Dimensions.get("window").height + 35,
-          width: Dimensions.get("window").width,
-          position: "absolute",
-        }}
-      >
-        <Header />
-      </SafeAreaView>
+      <Header />
     </>
   );
 };
