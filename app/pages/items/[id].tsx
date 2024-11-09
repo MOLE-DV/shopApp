@@ -23,8 +23,6 @@ import { isLoggedIn } from "@/components/UserAuthentication";
 export default function Item() {
   const { itemId, title, icon, price, description } = useLocalSearchParams();
   const [isFavorite, setToFavorite] = useState(false);
-  const [favoritedItems, setFavoritedItems] = useState([]);
-
   let changedIcon = icon.toString().replace(`items/`, `items%2F`);
 
   const heartIcons = {
@@ -33,15 +31,29 @@ export default function Item() {
   };
 
   useEffect(() => {
-    favoritedItems.forEach((item) => {
-      switch (itemId === item.id) {
-        case true:
-          setToFavorite(true);
-          break;
-        default:
-          break;
+    const fetchFavorites = async () => {
+      const user = (await isLoggedIn()) as {
+        loggedIn: boolean;
+        email: string | null;
+        displayName: string | null;
+      };
+
+      if (user.loggedIn === false || !user) {
+        return;
       }
-    });
+
+      let favorites = await Fetch(user.email as string);
+
+      if (!favorites) {
+        return;
+      }
+
+      let favoritedItems = favorites![0].items;
+
+      setToFavorite(favorites![0].items.indexOf(itemId.toString()) !== -1);
+    };
+
+    fetchFavorites();
   }, []);
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -84,8 +96,6 @@ export default function Item() {
     if (user.loggedIn === false || !user) {
       return;
     }
-
-    console.log(await Fetch(user.email as string));
   };
 
   return (
