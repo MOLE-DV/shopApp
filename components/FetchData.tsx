@@ -18,7 +18,7 @@ const Fetch = async () => {
 
   try {
     const storageURL = Constants.expoConfig?.extra?.firebaseStorageUrl || "";
-    console.log("Fetching items...");
+    console.log("⚙️ Fetching items...");
 
     const itemQuery = query(collection(FIREBASE_DB, "items"), limit(15));
     const querySnapshot = await getDocs(itemQuery);
@@ -34,7 +34,9 @@ const Fetch = async () => {
       try {
         imageUrl = await getDownloadURL(imageRef);
       } catch (error) {
-        console.warn(`Image not found for ID ${itemId}, using default image.`);
+        console.log(
+          `⚠️ Image not found for ID ${itemId}, using default image.`
+        );
       }
 
       return { ...itemData, icon: imageUrl };
@@ -42,10 +44,10 @@ const Fetch = async () => {
 
     items = await Promise.all(itemPromises);
   } catch (ex) {
-    console.error("Error fetching items:", ex);
+    console.error("❌ Error fetching items:", ex);
   }
 
-  console.log(`Successfully fetched ${items.length} items`);
+  console.log(`✅ Successfully fetched ${items.length} items`);
   return items;
 };
 

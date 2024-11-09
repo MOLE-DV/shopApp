@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  KeyboardAvoidingView,
 } from "react-native";
 import { isLoggedIn } from "../../components/UserAuthentication";
 import { useState, useEffect } from "react";
@@ -16,20 +17,16 @@ import { useFonts } from "expo-font";
 import LoginStyles from "../../styles/Login/LoginStyles";
 import GlobalStyles from "../../styles/GlobalStyles";
 
-import { logIn } from "../../components/UserAuthentication";
+import { signUp } from "../../components/UserAuthentication";
 import ImageButton from "@/components/ImageButton";
 import KeyboardAvoidingContainer from "@/components/KeyboardAvoidingContainer";
-
-interface userInfo {
-  loggedIn: boolean;
-  email: string | null;
-}
-export default function Login() {
-  const [userInfo, setUserInfo] = useState<userInfo | {}>({});
+export default function SignUp() {
   const [loaded, setLoaded] = useState(true);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [firstname, setFirstName] = useState("");
+  const [surname, setSurname] = useState("");
 
   const [fontsLoaded] = useFonts({
     ExtraDays: require("../../assets/fonts/extraDays.otf"),
@@ -37,31 +34,33 @@ export default function Login() {
     Zikketica: require("../../assets/fonts/Zikketica.ttf"),
   });
 
-  useEffect(() => {
-    async function fetchUserInfo() {
-      const userStatus = await isLoggedIn();
-      setUserInfo(userStatus as userInfo);
-    }
-
-    fetchUserInfo();
-  }, []);
-
-  const loginbuttonHandler = async () => {
+  const signUpHandler = async () => {
     setLoaded(false);
-    const response = await logIn(email, password);
+    const response = (await signUp(email, password, firstname, surname)) as
+      | string
+      | boolean;
 
     switch (response) {
-      case "invalid-credential":
-        Alert.alert("Wrong password", "Wrong password! Please try again.");
-        break;
       case "empty-data":
         Alert.alert("Empty fields", "Please fill in all the fields!");
         break;
-      case "invalid-email":
-        Alert.alert("Invalid e-mail", "Invalid e-mail! Please try again.");
-        break;
       case "missing-password":
         Alert.alert("Missing password", "Password field is required");
+        break;
+      case "invalid-email":
+        Alert.alert(
+          "Invalid e-mail",
+          "Invalid e-mail! Email should look like this: example@example.com"
+        );
+        break;
+      case "weak-password":
+        Alert.alert(
+          "Weak password",
+          "Password should be at least 6 characters long, contain at least one uppercase letter, lowercase letter and special character"
+        );
+        break;
+      case "email-already-in-use":
+        Alert.alert("Email already in use", "This e-mail is already in use!");
         break;
     }
     setLoaded(true);
@@ -91,7 +90,35 @@ export default function Login() {
           onPress={() => router.back()}
         />
       </View>
-      <Text style={LoginStyles.loginText}>Login</Text>
+      <Text style={LoginStyles.loginText}>Sign up</Text>
+      <View style={LoginStyles.inputContainer}>
+        <Text style={LoginStyles.label}>First name</Text>
+        <Image
+          style={LoginStyles.inputIcon}
+          source={require("../../assets/icons/png/user.png")}
+        />
+        <TextInput
+          blurOnSubmit={false}
+          style={LoginStyles.input}
+          placeholder="Type your first name"
+          placeholderTextColor={"rgb(165, 165, 165)"}
+          onChangeText={(text) => setFirstName(text)}
+        />
+      </View>
+      <View style={LoginStyles.inputContainer}>
+        <Text style={LoginStyles.label}>Surname</Text>
+        <Image
+          style={LoginStyles.inputIcon}
+          source={require("../../assets/icons/png/users.png")}
+        />
+        <TextInput
+          blurOnSubmit={false}
+          style={LoginStyles.input}
+          placeholder="Type your surname"
+          placeholderTextColor={"rgb(165, 165, 165)"}
+          onChangeText={(text) => setSurname(text)}
+        />
+      </View>
       <View style={LoginStyles.inputContainer}>
         <Text style={LoginStyles.label}>E-mail</Text>
         <Image
@@ -121,24 +148,10 @@ export default function Login() {
         />
       </View>
       <TouchableOpacity
-        style={LoginStyles.forgotPasswordContainer}
-        onPress={() => router.push("/pages/SignUp")}
-      >
-        <Text style={LoginStyles.forgotPasswordText}>
-          I don't have an account
-        </Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={LoginStyles.forgotPasswordContainer}
-        onPress={() => router.push("/pages/ForgotPassword")}
-      >
-        <Text style={LoginStyles.forgotPasswordText}>Forgot password?</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
         style={LoginStyles.loginButtonContainer}
-        onPress={loginbuttonHandler}
+        onPress={signUpHandler}
       >
-        <Text style={LoginStyles.loginButtonText}>Sign in</Text>
+        <Text style={LoginStyles.loginButtonText}>Sign up</Text>
       </TouchableOpacity>
     </KeyboardAvoidingContainer>
   );

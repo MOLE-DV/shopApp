@@ -8,7 +8,7 @@ export default StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
-    marginTop: 20,
+    marginTop: 35,
   },
   searchBarInputContainer: {
     width: "100%",
@@ -37,24 +37,24 @@ export default StyleSheet.create({
   },
   flatListContainerStyle: {
     paddingBottom: Dimensions.get("window").width / 2 - 10,
+    justifyContent: "center",
+    flexGrow: 1,
+    alignItems: "center",
+  },
+  columnWrapperContainer: {
+    gap: 5,
   },
   itemsList: {
     paddingTop: Dimensions.get("window").width / 2 - 100,
     zIndex: -1,
     flexGrow: 1,
+    width: Dimensions.get("window").width,
   },
   listItem: {
-    width: Dimensions.get("window").width / 2 - 10,
-    height: Dimensions.get("window").width / 2 - 10 + 20,
-    marginLeft: 2.5,
-    marginBottom: 2.5,
     backgroundColor: "#F5F5F5",
     display: "flex",
     justifyContent: "flex-end",
     overflow: "hidden",
-    borderColor: "rgba(0, 0, 0, 0.5)",
-    borderWidth: 1,
-    borderRadius: 10,
   },
   listItemText: {
     color: "black",
@@ -64,7 +64,7 @@ export default StyleSheet.create({
     fontSize: 15,
   },
   listItemTextPrice: {
-    fontWeight: "bold",
+    color: "rgb(105, 64, 255)",
   },
   listItemIcon: {
     width: Dimensions.get("window").width / 2 - 10,
