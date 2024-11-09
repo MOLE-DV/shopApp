@@ -17,6 +17,8 @@ import ImageButton from "../../../components/ImageButton";
 
 import GlobalStyles from "../../../styles/GlobalStyles";
 import ItemsStyles from "../../../styles/Items/ItemsStyles";
+import Fetch from "@/components/FetchFavorites";
+import { isLoggedIn } from "@/components/UserAuthentication";
 
 export default function Item() {
   const { itemId, title, icon, price, description } = useLocalSearchParams();
@@ -73,22 +75,17 @@ export default function Item() {
   };
 
   const favoriteButtonHandler = async () => {
-    // try {
-    //   switch (isFavorite) {
-    //     case true:
-    //       favoritedItems.splice(
-    //         favoritedItems.indexOf({ id: itemId, title: title }),
-    //         1
-    //       );
-    //       break;
-    //     case false:
-    //       favoritedItems.push({ id: itemId, title: title });
-    //       break;
-    //   }
-    //   setToFavorite(!isFavorite);
-    // } catch (error) {
-    //   console.error("Failed to save item to favorites", error);
-    // }
+    const user = (await isLoggedIn()) as {
+      loggedIn: boolean;
+      email: string | null;
+      displayName: string | null;
+    };
+
+    if (user.loggedIn === false || !user) {
+      return;
+    }
+
+    console.log(await Fetch(user.email as string));
   };
 
   return (

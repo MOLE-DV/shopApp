@@ -32,26 +32,6 @@ export default function Header(props: any) {
     }).start();
   };
 
-  if (!rootNavigationState?.key) return null;
-
-  let images = {
-    house: require("../assets/icons/png/house.png"),
-    houseOpen: require("../assets/icons/png/house_open.png"),
-    catalog: require("../assets/icons/png/catalog.png"),
-    catalogOpen: require("../assets/icons/png/catalog_open.png"),
-    heart: require("../assets/icons/png/heart.png"),
-    heartOpen: require("../assets/icons/png/heart_open.png"),
-    mail: require("../assets/icons/png/mail.png"),
-    mailOpen: require("../assets/icons/png/mail_open.png"),
-    user: require("../assets/icons/png/user.png"),
-    userOpen: require("../assets/icons/png/user_open.png"),
-  };
-
-  function pressHandler(buttonType: string, path: Href<string>) {
-    router.push(path);
-    setSelected(buttonType);
-  }
-
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
@@ -71,6 +51,26 @@ export default function Header(props: any) {
       keyboardDidShowListener.remove();
     };
   }, []);
+
+  if (!rootNavigationState?.key) return null;
+
+  let images = {
+    house: require("../assets/icons/png/house.png"),
+    houseOpen: require("../assets/icons/png/house_open.png"),
+    catalog: require("../assets/icons/png/catalog.png"),
+    catalogOpen: require("../assets/icons/png/catalog_open.png"),
+    heart: require("../assets/icons/png/heart.png"),
+    heartOpen: require("../assets/icons/png/heart_open.png"),
+    mail: require("../assets/icons/png/mail.png"),
+    mailOpen: require("../assets/icons/png/mail_open.png"),
+    user: require("../assets/icons/png/user.png"),
+    userOpen: require("../assets/icons/png/user_open.png"),
+  };
+
+  function pressHandler(buttonType: string, path: Href<string>) {
+    router.push(path);
+    setSelected(buttonType);
+  }
 
   return (
     <Animated.View
