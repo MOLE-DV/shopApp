@@ -7,7 +7,6 @@ export default StyleSheet.create({
     overflow: "visible",
     width: Dimensions.get("window").width,
     height: Dimensions.get("window").height / 3.5,
-    position: "absolute",
     display: "flex",
     alignItems: "flex-start",
     justifyContent: "flex-end",
@@ -60,5 +59,30 @@ export default StyleSheet.create({
     marginTop: 20,
     fontSize: 20,
     color: "white",
+  },
+  contentStyles: {
+    width: Dimensions.get("window").width,
+    padding: 30,
+  },
+  contentStylesButton: {
+    width: "100%",
+    height: 50,
+    backgroundColor: "white",
+    borderColor: "rgb(105, 64, 255)",
+    borderWidth: 2,
+    borderRadius: 10,
+    alignItems: "center",
+    paddingHorizontal: 5,
+    flexDirection: "row",
+  },
+  contentStylesImage: {
+    height: 40,
+    width: 40,
+    tintColor: "rgb(105, 64, 255)",
+  },
+  contentStylesText: {
+    color: "rgb(105, 64, 255)",
+    marginLeft: 10,
+    fontSize: 16,
   },
 });

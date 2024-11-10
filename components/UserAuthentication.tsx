@@ -27,6 +27,7 @@ export async function logIn(email: string, password: string) {
 
     if (user) {
       await SecureStore.setItemAsync("userToken", user.uid);
+      await SecureStore.setItemAsync("userData", JSON.stringify(user));
     }
     console.log(`Logged in as ${email}`);
     return true;
@@ -104,6 +105,7 @@ export async function signUp(
 export async function logOut() {
   await signOut(FIREBASE_AUTH);
   await SecureStore.deleteItemAsync("userToken");
+  await SecureStore.deleteItemAsync("userData");
 }
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";

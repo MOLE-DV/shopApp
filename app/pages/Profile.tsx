@@ -83,6 +83,18 @@ export default function Profile() {
           />
         </View>
       </View>
+      <View style={ProfileStyles.contentStyles}>
+        <TouchableOpacity
+          style={ProfileStyles.contentStylesButton}
+          onPress={() => router.push("/pages/CreateNew")}
+        >
+          <Image
+            style={ProfileStyles.contentStylesImage}
+            source={require("../../assets/icons/png/plus.png")}
+          />
+          <Text style={ProfileStyles.contentStylesText}>List new item</Text>
+        </TouchableOpacity>
+      </View>
       <TouchableOpacity
         onPress={() => {
           logOut();

@@ -66,7 +66,7 @@ export default function Login() {
     }
     setLoaded(true);
     if (response === true) {
-      router.push("/pages/Profile");
+      router.back();
     }
   };
 

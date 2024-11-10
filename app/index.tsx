@@ -2,14 +2,16 @@ import { StatusBar } from "expo-status-bar";
 import {
   SafeAreaView,
   Text,
-  View,
+  Animated,
   TouchableOpacity,
   Image,
   FlatList,
   ActivityIndicator,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
 } from "react-native";
 import { router } from "expo-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
 import GlobalStyles from "../styles/GlobalStyles";
 import MainStyles from "../styles/Main/MainStyles";
@@ -26,6 +28,26 @@ interface Item {
 export default function App() {
   const [data, setData] = useState<Item[]>([]);
   const [loaded, setLoaded] = useState(false);
+  let lastScroll = 0;
+
+  const fadeAnimation = useRef(new Animated.Value(0)).current;
+  const animationDuration = 200;
+
+  const fadeIn = () => {
+    Animated.timing(fadeAnimation, {
+      toValue: 0,
+      duration: animationDuration,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const fadeOut = () => {
+    Animated.timing(fadeAnimation, {
+      toValue: -100,
+      duration: animationDuration,
+      useNativeDriver: true,
+    }).start();
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,6 +59,19 @@ export default function App() {
     };
     fetchData();
   }, []);
+
+  const ScrollHandler = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+    let scroll = event.nativeEvent.contentOffset.y;
+
+    if (scroll > lastScroll) {
+      fadeOut();
+    } else if (scroll < lastScroll) {
+      fadeIn();
+    }
+
+    lastScroll = scroll;
+  };
+
   return (
     <SafeAreaView style={GlobalStyles.androidSafeArea}>
       <ActivityIndicator
@@ -45,7 +80,12 @@ export default function App() {
         color="rgb(105, 64, 255)"
         animating={!loaded}
       />
-      <View style={MainStyles.searchBarContainer}>
+      <Animated.View
+        style={{
+          ...MainStyles.searchBarContainer,
+          transform: [{ translateY: fadeAnimation }],
+        }}
+      >
         <TouchableOpacity
           style={MainStyles.searchBarInputContainer}
           onPress={() => router.push("/pages/Catalog")}
@@ -57,13 +97,14 @@ export default function App() {
           />
         </TouchableOpacity>
         <StatusBar style="auto" />
-      </View>
+      </Animated.View>
       <FlatList
         numColumns={2}
         style={MainStyles.itemsList}
         contentContainerStyle={MainStyles.flatListContainerStyle}
         data={data}
         columnWrapperStyle={MainStyles.columnWrapperContainer}
+        onScroll={ScrollHandler}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={MainStyles.listItem}

@@ -13,6 +13,7 @@ const RootLayout = () => {
     <>
       <Stack>
         <Stack.Screen name="index" options={settings} />
+        <Stack.Screen name="pages/CreateNew" options={settings} />
         <Stack.Screen name="pages/Catalog" options={settings} />
         <Stack.Screen name="pages/Followed" options={settings} />
         <Stack.Screen name="pages/Login" options={settings} />

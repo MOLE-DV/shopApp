@@ -1,4 +1,5 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
+import { useFocusEffect } from "expo-router";
 import {
   SafeAreaView,
   Text,
@@ -8,7 +9,9 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
   Animated,
+  Alert,
 } from "react-native";
+import * as SecureStore from "expo-secure-store";
 
 import { useLocalSearchParams } from "expo-router";
 import { router } from "expo-router";
@@ -17,11 +20,26 @@ import ImageButton from "../../../components/ImageButton";
 
 import GlobalStyles from "../../../styles/GlobalStyles";
 import ItemsStyles from "../../../styles/Items/ItemsStyles";
-import Fetch from "@/components/FetchFavorites";
+import {
+  Fetch,
+  addToFavorites,
+  removeFromFavorites,
+} from "@/components/FavoritesManager";
 import { isLoggedIn } from "@/components/UserAuthentication";
+
+interface User {
+  loggedIn: boolean;
+  email: null | string;
+  displayName: null | string;
+}
 
 export default function Item() {
   const { itemId, title, icon, price, description } = useLocalSearchParams();
+  const [user, setUser] = useState<User>({
+    loggedIn: false,
+    email: null,
+    displayName: null,
+  });
   const [isFavorite, setToFavorite] = useState(false);
   let changedIcon = icon.toString().replace(`items/`, `items%2F`);
 
@@ -30,31 +48,52 @@ export default function Item() {
     heart_open: require("../../../assets/icons/png/heart_open.png"),
   };
 
-  useEffect(() => {
-    const fetchFavorites = async () => {
-      const user = (await isLoggedIn()) as {
-        loggedIn: boolean;
-        email: string | null;
-        displayName: string | null;
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchUser = async () => {
+        try {
+          const item = await SecureStore.getItemAsync("userData");
+          if (item) {
+            const parsedItem = JSON.parse(item);
+            setUser({
+              loggedIn: true,
+              email: parsedItem.email,
+              displayName: parsedItem.displayName,
+            });
+          }
+        } catch (error) {
+          console.error(error);
+        }
+        fetchFavorites();
       };
+      fetchUser();
 
-      if (user.loggedIn === false || !user) {
-        return;
-      }
+      const fetchFavorites = async () => {
+        if (!user.loggedIn) return;
 
-      let favorites = await Fetch(user.email as string);
+        const favorites = await Fetch(user.email as string);
+        if (favorites) {
+          const favoritedItems = favorites[0].items;
+          setToFavorite(favoritedItems.includes(itemId.toString()));
+        }
+      };
+    }, [user.email, user.loggedIn])
+  );
 
-      if (!favorites) {
-        return;
-      }
+  const favoriteButtonHandler = async () => {
+    if (!user.loggedIn) {
+      router.push("/pages/Login");
+      return;
+    }
 
-      let favoritedItems = favorites![0].items;
-
-      setToFavorite(favorites![0].items.indexOf(itemId.toString()) !== -1);
-    };
-
-    fetchFavorites();
-  }, []);
+    if (isFavorite) {
+      await removeFromFavorites(user.email as string, itemId as string);
+      setToFavorite(false);
+    } else {
+      await addToFavorites(user.email as string, itemId as string);
+      setToFavorite(true);
+    }
+  };
 
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const animationDuration = 150;
@@ -83,18 +122,6 @@ export default function Item() {
       case false:
         fadeIn();
         break;
-    }
-  };
-
-  const favoriteButtonHandler = async () => {
-    const user = (await isLoggedIn()) as {
-      loggedIn: boolean;
-      email: string | null;
-      displayName: string | null;
-    };
-
-    if (user.loggedIn === false || !user) {
-      return;
     }
   };
 
