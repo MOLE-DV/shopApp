@@ -8,8 +8,9 @@ import {
 } from "react-native";
 import React from "react";
 import { useEffect, useState } from "react";
-import { router } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { useFonts } from "expo-font";
+import * as SecureStore from "expo-secure-store";
 
 import ProfileStyles from "../../styles/Profile/ProfileStyles";
 import GlobalStyles from "../../styles/GlobalStyles";
@@ -36,15 +37,27 @@ export default function Profile() {
     Zikketica: require("../../assets/fonts/Zikketica.ttf"),
   });
 
-  useEffect(() => {
-    async function fetchUserInfo() {
-      const userStatus = await isLoggedIn();
-      setUserInfo(userStatus as userInfo);
-      setLoaded(true);
-    }
+  useFocusEffect(
+    React.useCallback(() => {
+      async function fetchUserInfo() {
+        await SecureStore.getItemAsync("userData").then((userData) => {
+          if (!userData) return;
 
-    fetchUserInfo();
-  }, []);
+          const user = JSON.parse(userData as string);
+
+          setUserInfo({
+            loggedIn: true,
+            email: user.email,
+            displayName: user.displayName,
+          } as userInfo);
+        });
+
+        setLoaded(true);
+      }
+
+      fetchUserInfo();
+    }, [])
+  );
 
   if (!fontsLoaded) return;
 
@@ -86,7 +99,11 @@ export default function Profile() {
       <View style={ProfileStyles.contentStyles}>
         <TouchableOpacity
           style={ProfileStyles.contentStylesButton}
-          onPress={() => router.push("/pages/CreateNew")}
+          onPress={() =>
+            userInfo.loggedIn
+              ? router.push("/pages/CreateNew")
+              : router.push("/pages/Login")
+          }
         >
           <Image
             style={ProfileStyles.contentStylesImage}

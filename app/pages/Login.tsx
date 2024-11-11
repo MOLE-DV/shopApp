@@ -8,6 +8,7 @@ import {
   Alert,
   ActivityIndicator,
 } from "react-native";
+import TextInputIcon from "@/components/TextInputIcon";
 import { isLoggedIn } from "../../components/UserAuthentication";
 import { useState, useEffect } from "react";
 import { router } from "expo-router";
@@ -92,34 +93,29 @@ export default function Login() {
         />
       </View>
       <Text style={LoginStyles.loginText}>Login</Text>
-      <View style={LoginStyles.inputContainer}>
-        <Text style={LoginStyles.label}>E-mail</Text>
-        <Image
-          style={LoginStyles.inputIcon}
-          source={require("../../assets/icons/png/mail.png")}
-        />
-        <TextInput
-          blurOnSubmit={false}
-          style={LoginStyles.input}
-          placeholder="Type your e-mail"
-          placeholderTextColor={"rgb(165, 165, 165)"}
-          onChangeText={(text) => setEmail(text)}
-        />
-      </View>
-      <View style={LoginStyles.inputContainer}>
-        <Text style={LoginStyles.label}>Password</Text>
-        <Image
-          style={LoginStyles.inputIcon}
-          source={require("../../assets/icons/png/key.png")}
-        />
-        <TextInput
-          style={LoginStyles.input}
-          placeholder="Type your password"
-          placeholderTextColor={"rgb(165, 165, 165)"}
-          onChangeText={(text) => setPassword(text)}
-          secureTextEntry={true}
-        />
-      </View>
+      <TextInputIcon
+        containerStyle={LoginStyles.inputContainer}
+        labelStyle={LoginStyles.label}
+        iconStyle={LoginStyles.inputIcon}
+        inputStyle={LoginStyles.input}
+        placeholder="Type your e-mail"
+        labelText="E-mail"
+        onChangeText={(text: string) => setEmail(text)}
+        placeholderTextColor="rgb(165, 165, 165)"
+        image={require("../../assets/icons/png/mail.png")}
+      />
+      <TextInputIcon
+        containerStyle={LoginStyles.inputContainer}
+        labelStyle={LoginStyles.label}
+        iconStyle={LoginStyles.inputIcon}
+        inputStyle={LoginStyles.input}
+        placeholder="Type your password"
+        labelText="Password"
+        onChangeText={(text: string) => setPassword(text)}
+        placeholderTextColor="rgb(165, 165, 165)"
+        image={require("../../assets/icons/png/key.png")}
+        secureTextEntry={true}
+      />
       <TouchableOpacity
         style={LoginStyles.forgotPasswordContainer}
         onPress={() => router.push("/pages/SignUp")}
