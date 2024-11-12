@@ -13,9 +13,42 @@ import CreateNewStyles from "@/styles/CreateNew/CreateNewStyles";
 import LoginStyles from "@/styles/Login/LoginStyles";
 import KeyboardAvoidingContainer from "@/components/KeyboardAvoidingContainer";
 import TextInputIcon from "@/components/TextInputIcon";
+import Dropdown from "@/components/Dropdown";
 
 export default function CreateNew() {
   const [price, setPrice] = useState("");
+
+  const data = [
+    {
+      value: "Electronics",
+      label: "test",
+    },
+    {
+      value: "Clothes",
+      label: "test",
+    },
+    {
+      value: "Appliances",
+      label: "test",
+      image: require("../../assets/icons/png/appliances.png"),
+    },
+    {
+      value: "Furniture",
+      label: "test",
+      image: require("../../assets/icons/png/furniture.png"),
+    },
+    {
+      value: "Vehicles",
+      label: "test",
+      image: require("../../assets/icons/png/wheel_vehicle.png"),
+    },
+    {
+      value: "Tools",
+      label: "test",
+      image: require("../../assets/icons/png/tools.png"),
+    },
+  ];
+
   const priceInputHandler = (text: string) => {
     let price = text.replace(/[^0-9.]/g, "");
     price = price.replace(/(\..*)\./g, "$1");
@@ -80,6 +113,11 @@ export default function CreateNew() {
           image={require("../../assets/icons/png/description.png")}
           value={price}
           keyboardType="numeric"
+        />
+        <Dropdown
+          labelText="Category"
+          data={data}
+          image={require("../../assets/icons/png/catalog.png")}
         />
       </View>
     </KeyboardAvoidingContainer>
