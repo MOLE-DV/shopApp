@@ -9,6 +9,7 @@ export default StyleSheet.create({
     alignItems: "center",
     position: "absolute",
     marginTop: 35,
+    zIndex: 1,
   },
   searchBarInputContainer: {
     width: "100%",

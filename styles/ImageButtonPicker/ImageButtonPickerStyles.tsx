@@ -1,33 +1,33 @@
 import { Dimensions, StyleSheet } from "react-native";
 
+const size = 300;
+
 const ImageButtonPickerStyles = StyleSheet.create({
   imageContainerStyle: {
     flexDirection: "row",
   },
   imagesScroll: {
-    width: 250,
-    height: 250,
     flexDirection: "row",
+    borderRadius: 10,
+  },
+  imageScrollUpperContainer: {
+    width: size,
+    height: size,
     marginBottom: 30,
     marginTop: 80,
   },
   image: {
-    height: 250,
-    width: 250,
-    position: "absolute",
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: "rgb(165, 165, 165)",
+    height: size,
+    width: size,
   },
   importButton: {
-    height: 250,
-    width: 250,
+    height: size,
+    width: size,
     borderWidth: 1,
-    borderRadius: 5,
+    borderRadius: 10,
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 30,
-    borderColor: "rgb(165, 165, 165)",
   },
   importButtonText: {
     bottom: 40,
@@ -39,7 +39,7 @@ const ImageButtonPickerStyles = StyleSheet.create({
   },
   slider: {
     position: "absolute",
-    width: 250,
+    width: size,
     bottom: 5,
     zIndex: 2,
     justifyContent: "center",
@@ -47,10 +47,18 @@ const ImageButtonPickerStyles = StyleSheet.create({
     gap: 10,
   },
   dot: {
-    height: 10,
-    width: 10,
+    height: 15,
+    width: 15,
+    borderRadius: "50%",
+    backgroundColor: "rgb(165, 165, 165)",
+  },
+  SelectedDot: {
+    height: 15,
+    width: 15,
     borderRadius: "50%",
     backgroundColor: "white",
+    borderColor: "rgb(165, 165, 165)",
+    borderWidth: 1,
   },
 });
 
