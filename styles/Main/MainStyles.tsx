@@ -46,7 +46,6 @@ export default StyleSheet.create({
   },
   itemsList: {
     paddingTop: Dimensions.get("window").width / 2 - 100,
-    zIndex: -1,
     flexGrow: 1,
     width: Dimensions.get("window").width,
   },

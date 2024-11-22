@@ -1,53 +1,21 @@
-import {
-  View,
-  Text,
-  SafeAreaView,
-  TextInput,
-  ActivityIndicator,
-} from "react-native";
+import { View, ActivityIndicator } from "react-native";
+
 import { useState } from "react";
 import { router } from "expo-router";
 import GlobalStyles from "../../styles/GlobalStyles";
 import ImageButton from "@/components/ImageButton";
+import ImageButtonPicker from "@/components/ImageButtonPicker";
 import CreateNewStyles from "@/styles/CreateNew/CreateNewStyles";
 import LoginStyles from "@/styles/Login/LoginStyles";
 import KeyboardAvoidingContainer from "@/components/KeyboardAvoidingContainer";
 import TextInputIcon from "@/components/TextInputIcon";
 import Dropdown from "@/components/Dropdown";
 
+import categories from "@/assets/categories";
+
 export default function CreateNew() {
   const [price, setPrice] = useState("");
-
-  const data = [
-    {
-      value: "Electronics",
-      label: "test",
-    },
-    {
-      value: "Clothes",
-      label: "test",
-    },
-    {
-      value: "Appliances",
-      label: "test",
-      image: require("../../assets/icons/png/appliances.png"),
-    },
-    {
-      value: "Furniture",
-      label: "test",
-      image: require("../../assets/icons/png/furniture.png"),
-    },
-    {
-      value: "Vehicles",
-      label: "test",
-      image: require("../../assets/icons/png/wheel_vehicle.png"),
-    },
-    {
-      value: "Tools",
-      label: "test",
-      image: require("../../assets/icons/png/tools.png"),
-    },
-  ];
+  const [image, setImage] = useState<string | null>(null);
 
   const priceInputHandler = (text: string) => {
     let price = text.replace(/[^0-9.]/g, "");
@@ -75,21 +43,14 @@ export default function CreateNew() {
           onPress={() => router.back()}
         />
       </View>
-      <ImageButton
+      <ImageButtonPicker
         text="Add Images"
         image={require("../../assets/icons/png/plus.png")}
-        buttonStyle={CreateNewStyles.importButton}
-        style={CreateNewStyles.importButtonImage}
-        textStyle={CreateNewStyles.importButtonText}
       />
       <View>
         <TextInputIcon
           placeholder="etc. white T-shirt"
           labelText="Title"
-          containerStyle={LoginStyles.inputContainer}
-          labelStyle={LoginStyles.label}
-          iconStyle={LoginStyles.inputIcon}
-          inputStyle={LoginStyles.input}
           image={require("../../assets/icons/png/pen.png")}
         />
         <TextInputIcon
@@ -101,13 +62,13 @@ export default function CreateNew() {
           inputStyle={CreateNewStyles.input}
           image={require("../../assets/icons/png/description.png")}
           multiline={true}
+          dividerVisible={false}
         />
         <TextInputIcon
           placeholder="4.99$"
           labelText="Price"
           containerStyle={CreateNewStyles.priceInputContainer}
           labelStyle={CreateNewStyles.priceLabel}
-          iconStyle={LoginStyles.inputIcon}
           inputStyle={CreateNewStyles.priceInput}
           onChangeText={priceInputHandler}
           image={require("../../assets/icons/png/description.png")}
@@ -116,7 +77,7 @@ export default function CreateNew() {
         />
         <Dropdown
           labelText="Category"
-          data={data}
+          data={categories}
           image={require("../../assets/icons/png/catalog.png")}
         />
       </View>

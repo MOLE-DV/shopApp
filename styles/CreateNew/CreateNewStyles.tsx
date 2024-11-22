@@ -1,24 +1,6 @@
 import { StyleSheet, Dimensions } from "react-native";
 
 const CreateNewStyles = StyleSheet.create({
-  importButton: {
-    height: 200,
-    width: 200,
-    borderWidth: 1,
-    marginTop: 80,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 20,
-    marginBottom: 30,
-  },
-  importButtonText: {
-    bottom: 40,
-    fontSize: 15,
-  },
-  importButtonImage: {
-    height: 50,
-    width: 50,
-  },
   title: {
     color: "rgb(105, 64, 255)",
     height: 40,
@@ -50,8 +32,8 @@ const CreateNewStyles = StyleSheet.create({
     marginBottom: 20,
     paddingHorizontal: 40,
     paddingTop: 20,
-    borderColor: "rgb(165, 165, 165)",
     borderWidth: 1,
+    borderColor: "rgb(165, 165, 165)",
     borderRadius: 2.5,
     fontFamily: "Zikketica",
     textAlignVertical: "top",

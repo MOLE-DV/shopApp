@@ -94,10 +94,6 @@ export default function Login() {
       </View>
       <Text style={LoginStyles.loginText}>Login</Text>
       <TextInputIcon
-        containerStyle={LoginStyles.inputContainer}
-        labelStyle={LoginStyles.label}
-        iconStyle={LoginStyles.inputIcon}
-        inputStyle={LoginStyles.input}
         placeholder="Type your e-mail"
         labelText="E-mail"
         onChangeText={(text: string) => setEmail(text)}
@@ -105,10 +101,6 @@ export default function Login() {
         image={require("../../assets/icons/png/mail.png")}
       />
       <TextInputIcon
-        containerStyle={LoginStyles.inputContainer}
-        labelStyle={LoginStyles.label}
-        iconStyle={LoginStyles.inputIcon}
-        inputStyle={LoginStyles.input}
         placeholder="Type your password"
         labelText="Password"
         onChangeText={(text: string) => setPassword(text)}

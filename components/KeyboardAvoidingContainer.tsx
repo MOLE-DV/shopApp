@@ -9,7 +9,9 @@ import { useEffect, useState } from "react";
 import { Keyboard } from "react-native";
 
 const KeyboardAvoidingContainer = ({ children }: React.PropsWithChildren) => {
-  const [padding, setPadding] = useState(80);
+  let headerPadding = 80;
+  let bottomPadding = 70;
+  const [padding, setPadding] = useState(headerPadding);
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
@@ -20,7 +22,7 @@ const KeyboardAvoidingContainer = ({ children }: React.PropsWithChildren) => {
     const keyboardDidHideListener = Keyboard.addListener(
       "keyboardDidHide",
       () => {
-        setPadding(80);
+        setPadding(headerPadding);
       }
     );
 
@@ -30,14 +32,24 @@ const KeyboardAvoidingContainer = ({ children }: React.PropsWithChildren) => {
     };
   }, []);
   return (
-    <SafeAreaView style={{ flex: 1, marginTop: 35, paddingBottom: padding }}>
+    <SafeAreaView
+      style={{
+        flex: 1,
+        marginTop: 35,
+        paddingBottom: padding,
+        backgroundColor: "white",
+      }}
+    >
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <ScrollView
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={{ alignItems: "center" }}
+          contentContainerStyle={{
+            alignItems: "center",
+            paddingBottom: bottomPadding,
+          }}
         >
           {children}
         </ScrollView>
