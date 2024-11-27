@@ -10,7 +10,7 @@ import {
   NativeSyntheticEvent,
   NativeScrollEvent,
 } from "react-native";
-import { router } from "expo-router";
+import { RelativePathString, router } from "expo-router";
 import { useState, useEffect, useRef } from "react";
 
 import GlobalStyles from "../styles/GlobalStyles";
@@ -110,7 +110,7 @@ export default function App() {
             style={MainStyles.listItem}
             onPress={() =>
               router.push({
-                pathname: `/pages/items/${item.id}`,
+                pathname: `/pages/items/${item.id}` as RelativePathString,
                 params: {
                   itemId: item.id,
                   title: item.title,

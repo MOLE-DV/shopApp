@@ -1,16 +1,15 @@
 import { Stack } from "expo-router";
 import React from "react";
 import Header from "../components/Header";
-import { Dimensions, SafeAreaView } from "react-native";
-import GlobalStyles from "@/styles/GlobalStyles";
-import KeyboardAvoidingContainer from "@/components/KeyboardAvoidingContainer";
+import { HeaderProvider } from "@/contexts/HeaderContext";
+
 const RootLayout = () => {
   const settings = {
     headerShown: false,
   };
 
   return (
-    <>
+    <HeaderProvider>
       <Stack>
         <Stack.Screen name="index" options={settings} />
         <Stack.Screen name="pages/CreateNew" options={settings} />
@@ -24,7 +23,7 @@ const RootLayout = () => {
         <Stack.Screen name="pages/items/[id]" options={settings} />
       </Stack>
       <Header />
-    </>
+    </HeaderProvider>
   );
 };
 

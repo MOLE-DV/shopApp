@@ -47,18 +47,16 @@ const ImageButtonPickerStyles = StyleSheet.create({
     gap: 10,
   },
   dot: {
-    height: 15,
-    width: 15,
+    height: 10,
+    width: 10,
     borderRadius: "50%",
-    backgroundColor: "rgb(165, 165, 165)",
+    backgroundColor: "rgb(216, 216, 216)",
   },
   SelectedDot: {
-    height: 15,
-    width: 15,
+    height: 10,
+    width: 10,
     borderRadius: "50%",
     backgroundColor: "white",
-    borderColor: "rgb(165, 165, 165)",
-    borderWidth: 1,
   },
 });
 

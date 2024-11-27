@@ -12,6 +12,7 @@ const TextInputIconStyles = StyleSheet.create({
     marginBottom: 10,
     color: "black",
     fontFamily: "Zikketica",
+    alignSelf: "left",
   },
   input: {
     height: 50,

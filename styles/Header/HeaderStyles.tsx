@@ -11,7 +11,7 @@ export default StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
-    zIndex: 100,
+    zIndex: 1,
     bottom: 0,
   },
   imageButton: {

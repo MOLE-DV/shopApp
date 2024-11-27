@@ -2,6 +2,7 @@ import { View, Animated } from "react-native";
 import { useState, useEffect, useRef } from "react";
 import { router, Href, useRootNavigationState } from "expo-router";
 import { Keyboard } from "react-native";
+import { useHeader } from "@/contexts/HeaderContext";
 
 import GlobalStyles from "../styles/GlobalStyles";
 import HeaderStyles from "../styles/Header/HeaderStyles";
@@ -9,6 +10,7 @@ import HeaderStyles from "../styles/Header/HeaderStyles";
 import ImageButton from "../components/ImageButton";
 
 export default function Header(props: any) {
+  const { hidden, setHidden } = useHeader();
   const [selected, setSelected] = useState<string>("main");
 
   const rootNavigationState = useRootNavigationState();
@@ -32,17 +34,26 @@ export default function Header(props: any) {
     }).start();
   };
 
+  switch (hidden) {
+    case true:
+      fadeOut();
+      break;
+    case false:
+      fadeIn();
+      break;
+  }
+
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
       "keyboardDidShow",
       () => {
-        fadeOut();
+        setHidden(true);
       }
     );
     const keyboardDidHideListener = Keyboard.addListener(
       "keyboardDidHide",
       () => {
-        fadeIn();
+        setHidden(false);
       }
     );
 

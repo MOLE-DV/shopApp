@@ -1,23 +1,27 @@
 import { Image, TouchableOpacity, Text, ScrollView, View } from "react-native";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import ImageButtonPickerStyles from "@/styles/ImageButtonPicker/ImageButtonPickerStyles";
+import { useImagesContext } from "@/contexts/ImagesContext";
 
 const ImageButtonPicker = (props: any) => {
   const scrollViewRef = useRef(null);
-  const [images, setImages] = useState<string[] | null>(null);
+  const { images, setImages } = useImagesContext();
   const [currentScrollOffset, setCurrentScrollOffset] = useState(0);
+
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"] as unknown as ImagePicker.MediaType,
       selectionLimit: 5,
-      aspect: [4, 4],
-      allowsMultipleSelection: true,
       quality: 0.75,
+      allowsMultipleSelection: true,
     });
 
     if (!result.canceled) {
-      setImages(result.assets?.map((a) => a.uri));
+      setImages({
+        edited: false,
+        uris: result.assets?.map((a) => a.uri) as string[],
+      });
     }
   };
 
@@ -26,10 +30,8 @@ const ImageButtonPicker = (props: any) => {
   };
 
   const imageScrollSelectorHandler = (index: number) => {
-    if (!scrollViewRef) {
-      console.log("no scroll");
-      return;
-    }
+    if (!scrollViewRef) return;
+
     setCurrentScrollOffset(index * 300);
     scrollViewRef.current.scrollTo({ y: 0, x: index * 300 });
   };
@@ -58,7 +60,7 @@ const ImageButtonPicker = (props: any) => {
   ) : (
     <View style={{ ...ImageButtonPickerStyles.imageScrollUpperContainer }}>
       <View style={{ ...ImageButtonPickerStyles.slider }}>
-        {images.map((item, index) => (
+        {images.uris.map((item, index) => (
           <View
             key={index}
             onTouchEnd={() => imageScrollSelectorHandler(index)}
@@ -74,7 +76,7 @@ const ImageButtonPicker = (props: any) => {
         ref={scrollViewRef}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        snapToOffsets={images.map((el, index) => 300 * index)}
+        snapToOffsets={images.uris.map((el, index) => 300 * index)}
         contentOffset={{ x: 0, y: 0 }}
         style={{ ...ImageButtonPickerStyles.imagesScroll }}
         contentContainerStyle={{
@@ -85,7 +87,7 @@ const ImageButtonPicker = (props: any) => {
         snapToStart
         onMomentumScrollEnd={scrollManager}
       >
-        {images.map((item, index) => {
+        {images.uris.map((item, index) => {
           return (
             <View key={index}>
               <Image
