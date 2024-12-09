@@ -11,6 +11,8 @@ export default StyleSheet.create({
   },
   activityIndicator: {
     position: "absolute",
+    width: Dimensions.get("window").width,
+    height: Dimensions.get("window").height,
     top: 0,
     bottom: 0,
     alignItems: "center",

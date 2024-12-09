@@ -1,18 +1,8 @@
-import {
-  View,
-  Text,
-  SafeAreaView,
-  TextInput,
-  Image,
-  TouchableOpacity,
-  Alert,
-  ActivityIndicator,
-  KeyboardAvoidingView,
-} from "react-native";
-import { isLoggedIn } from "../../components/UserAuthentication";
-import { useState, useEffect } from "react";
+import { View, Text, Alert } from "react-native";
+import { useState } from "react";
 import { router } from "expo-router";
 import { useFonts } from "expo-font";
+import TextInputIcon from "@/components/TextInputIcon";
 
 import LoginStyles from "../../styles/Login/LoginStyles";
 import GlobalStyles from "../../styles/GlobalStyles";
@@ -20,8 +10,10 @@ import GlobalStyles from "../../styles/GlobalStyles";
 import { signUp } from "../../components/UserAuthentication";
 import ImageButton from "@/components/ImageButton";
 import KeyboardAvoidingContainer from "@/components/KeyboardAvoidingContainer";
+import CustomButton from "@/components/CustomButton";
+import { useApp } from "@/contexts/AppContext";
 export default function SignUp() {
-  const [loaded, setLoaded] = useState(true);
+  const { setLoading, setHidden } = useApp();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -35,7 +27,9 @@ export default function SignUp() {
   });
 
   const signUpHandler = async () => {
-    setLoaded(false);
+    setLoading(true);
+    setHidden(true);
+
     const response = (await signUp(email, password, firstname, surname)) as
       | string
       | boolean;
@@ -63,9 +57,10 @@ export default function SignUp() {
         Alert.alert("Email already in use", "This e-mail is already in use!");
         break;
     }
-    setLoaded(true);
     if (response === true) {
       router.push("/pages/Profile");
+      setLoading(false);
+      setHidden(false);
     }
   };
 
@@ -73,12 +68,6 @@ export default function SignUp() {
 
   return (
     <KeyboardAvoidingContainer>
-      <ActivityIndicator
-        size="large"
-        style={GlobalStyles.activityIndicator}
-        color="rgb(105, 64, 255)"
-        animating={!loaded}
-      />
       <View style={LoginStyles.topNavBar}>
         <View style={[LoginStyles.topNavBarBackground]} />
         <ImageButton
@@ -91,68 +80,35 @@ export default function SignUp() {
         />
       </View>
       <Text style={LoginStyles.loginText}>Sign up</Text>
-      <View style={LoginStyles.inputContainer}>
-        <Text style={LoginStyles.label}>First name</Text>
-        <Image
-          style={LoginStyles.inputIcon}
-          source={require("../../assets/icons/png/user.png")}
-        />
-        <TextInput
-          blurOnSubmit={false}
-          style={LoginStyles.input}
-          placeholder="Type your first name"
-          placeholderTextColor={"rgb(165, 165, 165)"}
-          onChangeText={(text) => setFirstName(text)}
-        />
-      </View>
-      <View style={LoginStyles.inputContainer}>
-        <Text style={LoginStyles.label}>Surname</Text>
-        <Image
-          style={LoginStyles.inputIcon}
-          source={require("../../assets/icons/png/users.png")}
-        />
-        <TextInput
-          blurOnSubmit={false}
-          style={LoginStyles.input}
-          placeholder="Type your surname"
-          placeholderTextColor={"rgb(165, 165, 165)"}
-          onChangeText={(text) => setSurname(text)}
-        />
-      </View>
-      <View style={LoginStyles.inputContainer}>
-        <Text style={LoginStyles.label}>E-mail</Text>
-        <Image
-          style={LoginStyles.inputIcon}
-          source={require("../../assets/icons/png/mail.png")}
-        />
-        <TextInput
-          blurOnSubmit={false}
-          style={LoginStyles.input}
-          placeholder="Type your e-mail"
-          placeholderTextColor={"rgb(165, 165, 165)"}
-          onChangeText={(text) => setEmail(text)}
-        />
-      </View>
-      <View style={LoginStyles.inputContainer}>
-        <Text style={LoginStyles.label}>Password</Text>
-        <Image
-          style={LoginStyles.inputIcon}
-          source={require("../../assets/icons/png/key.png")}
-        />
-        <TextInput
-          style={LoginStyles.input}
-          placeholder="Type your password"
-          placeholderTextColor={"rgb(165, 165, 165)"}
-          onChangeText={(text) => setPassword(text)}
-          secureTextEntry={true}
-        />
-      </View>
-      <TouchableOpacity
-        style={LoginStyles.loginButtonContainer}
-        onPress={signUpHandler}
-      >
-        <Text style={LoginStyles.loginButtonText}>Sign up</Text>
-      </TouchableOpacity>
+      <TextInputIcon
+        placeholder="Type your first name"
+        labelText="First name"
+        onChangeText={(text: string) => setFirstName(text)}
+        placeholderTextColor="rgb(165, 165, 165)"
+        image={require("../../assets/icons/png/user.png")}
+      />
+      <TextInputIcon
+        placeholder="Type your surname"
+        labelText="Surname"
+        onChangeText={(text: string) => setSurname(text)}
+        placeholderTextColor="rgb(165, 165, 165)"
+        image={require("../../assets/icons/png/users.png")}
+      />
+      <TextInputIcon
+        placeholder="Type your e-mail"
+        labelText="E-mail"
+        onChangeText={(text: string) => setEmail(text)}
+        placeholderTextColor="rgb(165, 165, 165)"
+        image={require("../../assets/icons/png/mail.png")}
+      />
+      <TextInputIcon
+        placeholder="Type your password"
+        labelText="Password"
+        onChangeText={(text: string) => setPassword(text)}
+        placeholderTextColor="rgb(165, 165, 165)"
+        image={require("../../assets/icons/png/key.png")}
+      />
+      <CustomButton Text="Sign Up" OnPress={() => signUpHandler()} />
     </KeyboardAvoidingContainer>
   );
 }

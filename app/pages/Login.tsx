@@ -20,6 +20,8 @@ import GlobalStyles from "../../styles/GlobalStyles";
 import { logIn } from "../../components/UserAuthentication";
 import ImageButton from "@/components/ImageButton";
 import KeyboardAvoidingContainer from "@/components/KeyboardAvoidingContainer";
+import CustomButton from "@/components/CustomButton";
+import { useApp } from "@/contexts/AppContext";
 
 interface userInfo {
   loggedIn: boolean;
@@ -27,7 +29,7 @@ interface userInfo {
 }
 export default function Login() {
   const [userInfo, setUserInfo] = useState<userInfo | {}>({});
-  const [loaded, setLoaded] = useState(true);
+  const { setLoading, setHidden } = useApp();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -48,7 +50,8 @@ export default function Login() {
   }, []);
 
   const loginbuttonHandler = async () => {
-    setLoaded(false);
+    setLoading(true);
+    setHidden(true);
     const response = await logIn(email, password);
 
     switch (response) {
@@ -65,9 +68,10 @@ export default function Login() {
         Alert.alert("Missing password", "Password field is required");
         break;
     }
-    setLoaded(true);
     if (response === true) {
       router.back();
+      setLoading(false);
+      setHidden(false);
     }
   };
 
@@ -75,12 +79,6 @@ export default function Login() {
 
   return (
     <KeyboardAvoidingContainer>
-      <ActivityIndicator
-        size="large"
-        style={GlobalStyles.activityIndicator}
-        color="rgb(105, 64, 255)"
-        animating={!loaded}
-      />
       <View style={LoginStyles.topNavBar}>
         <View style={[LoginStyles.topNavBarBackground]} />
         <ImageButton
@@ -122,12 +120,7 @@ export default function Login() {
       >
         <Text style={LoginStyles.forgotPasswordText}>Forgot password?</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        style={LoginStyles.loginButtonContainer}
-        onPress={loginbuttonHandler}
-      >
-        <Text style={LoginStyles.loginButtonText}>Sign in</Text>
-      </TouchableOpacity>
+      <CustomButton Text="Login" OnPress={() => loginbuttonHandler()} />
     </KeyboardAvoidingContainer>
   );
 }

@@ -1,7 +1,8 @@
 import { Stack } from "expo-router";
 import React from "react";
 import Header from "../components/Header";
-import { HeaderProvider } from "@/contexts/HeaderContext";
+import { AppProvider, useApp } from "@/contexts/AppContext";
+import LoadingIndicator from "@/components/Loading";
 
 const RootLayout = () => {
   const settings = {
@@ -9,7 +10,7 @@ const RootLayout = () => {
   };
 
   return (
-    <HeaderProvider>
+    <AppProvider>
       <Stack>
         <Stack.Screen name="index" options={settings} />
         <Stack.Screen name="pages/CreateNew" options={settings} />
@@ -23,7 +24,8 @@ const RootLayout = () => {
         <Stack.Screen name="pages/items/[id]" options={settings} />
       </Stack>
       <Header />
-    </HeaderProvider>
+      <LoadingIndicator />
+    </AppProvider>
   );
 };
 

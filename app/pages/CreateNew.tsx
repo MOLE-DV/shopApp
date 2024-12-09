@@ -1,8 +1,7 @@
-import { View, ActivityIndicator } from "react-native";
+import { View, TouchableOpacity, Text } from "react-native";
 
 import { useState } from "react";
 import { router } from "expo-router";
-import GlobalStyles from "../../styles/GlobalStyles";
 import ImageButton from "@/components/ImageButton";
 import ImageButtonPicker from "@/components/ImageButtonPicker";
 import CreateNewStyles from "@/styles/CreateNew/CreateNewStyles";
@@ -11,14 +10,13 @@ import KeyboardAvoidingContainer from "@/components/KeyboardAvoidingContainer";
 import TextInputIcon from "@/components/TextInputIcon";
 import Dropdown from "@/components/Dropdown";
 import { ImagesProvider } from "@/contexts/ImagesContext";
-
 import categories from "@/assets/categories";
 import ImageModifier from "@/components/ImageModifier";
+import CustomButton from "@/components/CustomButton";
 
 export default function CreateNew() {
   const [price, setPrice] = useState("");
   const [images, setImages] = useState<string[] | null>(null);
-
   const priceInputHandler = (text: string) => {
     let price = text.replace(/[^0-9.]/g, "");
     price = price.replace(/(\..*)\./g, "$1");
@@ -30,12 +28,6 @@ export default function CreateNew() {
     <ImagesProvider>
       <View style={{ flex: 1 }}>
         <KeyboardAvoidingContainer>
-          <ActivityIndicator
-            size="large"
-            style={GlobalStyles.activityIndicator}
-            color="rgb(105, 64, 255)"
-            animating={false}
-          />
           <View style={LoginStyles.topNavBar}>
             <View style={[LoginStyles.topNavBarBackground]} />
             <ImageButton
@@ -86,6 +78,7 @@ export default function CreateNew() {
               data={categories}
               image={require("../../assets/icons/png/catalog.png")}
             />
+            <CustomButton Text="List Item" OnPress={() => undefined} />
           </View>
         </KeyboardAvoidingContainer>
         <ImageModifier />

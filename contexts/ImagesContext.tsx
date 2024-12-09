@@ -1,22 +1,10 @@
 import { createContext, ReactNode, useContext, useState } from "react";
+import imagesI from "@/interfaces/imagesInterface";
+import imageI from "@/interfaces/imageInterface";
 
-interface imageI {
-  edited: boolean;
-  uris: string[];
-}
-
-interface imagesI {
-  images: imageI;
-  setImages: (images: imageI) => void;
-}
-
-const imagesContext = createContext<imagesI>({
-  images: { edited: false, uris: [] },
-  setImages: () => undefined,
-});
-
+const imagesContext = createContext<imagesI | undefined>(undefined);
 export const ImagesProvider = ({ children }: { children: ReactNode }) => {
-  const [images, setImages] = useState<imageI>({
+  const [images, setImages] = useState<imageI | undefined>({
     edited: false,
     uris: [],
   });

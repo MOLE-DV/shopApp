@@ -19,24 +19,6 @@ export default StyleSheet.create({
     height: 40,
     right: 40,
   },
-  loginButtonContainer: {
-    marginTop: 15,
-    width:
-      Dimensions.get("window").width -
-      (Dimensions.get("window").width / 10) * 2,
-
-    padding: 15,
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgb(105, 64, 255)",
-  },
-  loginButtonText: {
-    color: "white",
-    textTransform: "uppercase",
-    fontSize: 18,
-    letterSpacing: 2,
-  },
   topNavBar: {
     position: "absolute",
     zIndex: 1,
