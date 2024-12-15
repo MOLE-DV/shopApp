@@ -5,6 +5,7 @@ import {
   Text,
   ScrollView,
   View,
+  ImageSourcePropType,
 } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
@@ -13,7 +14,14 @@ import { useImagesContext } from "@/contexts/ImagesContext";
 import { useApp } from "@/contexts/AppContext";
 import imagesI from "@/interfaces/imagesInterface";
 
-const ImageButtonPicker = (props: any) => {
+interface propsI {
+  OnSelected?: (images: string[]) => void;
+  Text?: string;
+  Image?: ImageSourcePropType;
+  FetchImages?: (images: string[]) => void;
+}
+
+const ImageButtonPicker = (props: propsI) => {
   const scrollViewRef = useRef(null);
   const { setHidden, setLoading } = useApp();
   const { images, setImages } = useImagesContext() as imagesI;
@@ -40,6 +48,12 @@ const ImageButtonPicker = (props: any) => {
     }
   };
 
+  useEffect(() => {
+    if (!images?.edited || !props.OnSelected) return;
+    props.OnSelected(images.uris);
+    console.log("testesade");
+  }, [images?.edited]);
+
   const scrollManager = (e: any) => {
     setCurrentScrollOffset(Math.round(e.nativeEvent.contentOffset.x));
   };
@@ -60,7 +74,7 @@ const ImageButtonPicker = (props: any) => {
       }}
     >
       <Image
-        source={props.image}
+        source={props.Image}
         style={{ ...ImageButtonPickerStyles.importButtonImage }}
       />
       <Text
@@ -69,7 +83,7 @@ const ImageButtonPicker = (props: any) => {
           ...ImageButtonPickerStyles.importButtonText,
         }}
       >
-        {props.text}
+        {props.Text}
       </Text>
     </TouchableOpacity>
   ) : (
@@ -93,7 +107,9 @@ const ImageButtonPicker = (props: any) => {
         ref={scrollViewRef}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        snapToOffsets={images.uris.map((el, index) => 300 * index)}
+        snapToOffsets={
+          images ? images.uris.map((el, index) => 300 * index) : undefined
+        }
         contentOffset={{ x: 0, y: 0 }}
         style={{ ...ImageButtonPickerStyles.imagesScroll }}
         contentContainerStyle={{
@@ -130,7 +146,7 @@ const ImageButtonPicker = (props: any) => {
               }}
             >
               <Image
-                source={props.image}
+                source={props.Image}
                 style={{ ...ImageButtonPickerStyles.importButtonImage }}
               />
               <Text
@@ -139,7 +155,7 @@ const ImageButtonPicker = (props: any) => {
                   ...ImageButtonPickerStyles.importButtonText,
                 }}
               >
-                {props.text}
+                {props.Text}
               </Text>
             </TouchableOpacity>
           ) : null

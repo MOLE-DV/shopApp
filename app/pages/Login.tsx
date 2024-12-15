@@ -68,10 +68,10 @@ export default function Login() {
         Alert.alert("Missing password", "Password field is required");
         break;
     }
+    setLoading(false);
+    setHidden(false);
     if (response === true) {
       router.back();
-      setLoading(false);
-      setHidden(false);
     }
   };
 

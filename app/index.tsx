@@ -105,33 +105,35 @@ export default function App() {
         data={data}
         columnWrapperStyle={MainStyles.columnWrapperContainer}
         onScroll={ScrollHandler}
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={MainStyles.listItem}
-            onPress={() =>
-              router.push({
-                pathname: `/pages/items/${item.id}` as RelativePathString,
-                params: {
-                  itemId: item.id,
-                  title: item.title,
-                  price: item.price,
-                  icon: item.icon,
-                  description: item.description,
-                },
-              })
-            }
-          >
-            <Image
-              style={MainStyles.listItemIcon}
-              source={{ uri: item.icon }}
-            />
-            <Text style={MainStyles.listItemText}>
-              {item.title}
-              {"\n"}
-              <Text style={MainStyles.listItemTextPrice}>{item.price}</Text>
-            </Text>
-          </TouchableOpacity>
-        )}
+        renderItem={({ item }) => {
+          return (
+            <TouchableOpacity
+              style={MainStyles.listItem}
+              onPress={() =>
+                router.push({
+                  pathname: `/pages/items/${item.id}` as RelativePathString,
+                  params: {
+                    itemId: item.id,
+                    title: item.title,
+                    price: item.price,
+                    icon: item.icon,
+                    description: item.description,
+                  },
+                })
+              }
+            >
+              <Image
+                style={MainStyles.listItemIcon}
+                source={{ uri: item.icon }}
+              />
+              <Text style={MainStyles.listItemText}>
+                {item.title}
+                {"\n"}
+                <Text style={MainStyles.listItemTextPrice}>{item.price}$</Text>
+              </Text>
+            </TouchableOpacity>
+          );
+        }}
       />
     </SafeAreaView>
   );

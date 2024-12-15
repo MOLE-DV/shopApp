@@ -7,10 +7,31 @@ import {
   Image,
   FlatList,
   ScrollView,
-  GestureResponderEvent,
+  ImageSourcePropType,
 } from "react-native";
 
-const Dropdown = (props: any) => {
+interface categoryI {
+  image: ImageSourcePropType;
+  value: string;
+  label: string;
+}
+
+interface propsI {
+  dropdownStyle?: Record<string, any>;
+  labelStyle?: Record<string, any>;
+  buttonStyle?: Record<string, any>;
+  iconStyle?: Record<string, any>;
+  optionsStyle?: Record<string, any>;
+  optionItemStyle?: Record<string, any>;
+  optionItemTextStyle?: Record<string, any>;
+  separatorStyle?: Record<string, any>;
+  OnSelected?: (selected: categoryI) => void;
+  image?: string;
+  labelText?: string;
+  data: categoryI[];
+}
+
+const Dropdown = (props: propsI) => {
   const [expanded, setExpanded] = useState(false);
   const [selectedElement, selectElement] = useState(props.data[0]);
 
@@ -18,7 +39,11 @@ const Dropdown = (props: any) => {
     setExpanded(!expanded);
   };
 
-  const selectHandler = (element: {}) => {
+  const selectHandler = (element: categoryI) => {
+    if (props.OnSelected) {
+      props.OnSelected(element);
+    }
+
     selectElement(element);
     setExpanded(false);
   };

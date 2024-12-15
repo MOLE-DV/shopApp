@@ -67,6 +67,12 @@ const CreateNewStyles = StyleSheet.create({
     borderRadius: 2.5,
     fontFamily: "Zikketica",
   },
+  ListButton: {
+    width:
+      Dimensions.get("window").width -
+      (2 * Dimensions.get("window").width) / 10.2,
+    position: "relative",
+  },
 });
 
 export default CreateNewStyles;

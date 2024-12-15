@@ -60,7 +60,6 @@ const ImageModifier = () => {
       });
 
       const rotNum = ((currentEditedImage.rotation + rotation) / 180) % 2;
-      console.log(rotNum);
     } catch (ex) {
       console.error("Error rotating image: ", ex);
     }
@@ -110,14 +109,6 @@ const ImageModifier = () => {
         ? currentEditedImage.cropPos.x * cropElementSizeDiff
         : currentEditedImage.cropPos.y * cropElementSizeDiff,
     ];
-
-    console.log(
-      `cropSize: ${cropSize} height: ${currentEditedImage.height} width: ${
-        currentEditedImage.width
-      } [startX: ${cropX}, startY: ${cropY}] [endX: ${
-        cropX + cropSize
-      }, endY: ${cropY + cropSize}] rot: ${currentEditedImage.rotation}`
-    );
 
     const ImageComponentCropCords = currentEditedImage.horizontal
       ? { x: elementCenterPosition, y: 0 }
@@ -178,7 +169,6 @@ const ImageModifier = () => {
         return false;
       }
 
-      console.log("Applying crop...");
       const cropSize = currentEditedImage.horizontal
         ? currentEditedImage.height
         : currentEditedImage.width;
@@ -195,7 +185,6 @@ const ImageModifier = () => {
           : currentEditedImage.cropPos.y * cropElementSizeDiff,
       ];
 
-      console.log(cropX, cropY);
       const rotNum = (currentEditedImage.rotation / 180) % 2;
       if (currentEditedImage.horizontal) {
         //sprawdzan jeżeli obraz jest obrócony o 180 lub 270 to odwraca X;
@@ -203,11 +192,6 @@ const ImageModifier = () => {
         if (Math.abs(rotNum) === 1) {
           cropX = currentEditedImage.width - cropSize - cropX;
         } else if (rotNum === 1.5 || rotNum === -0.5) {
-          console.log(
-            `${currentEditedImage.width} - ${cropSize} - ${cropY} = ${
-              currentEditedImage.width - cropSize - cropY
-            }`
-          );
           cropY = currentEditedImage.width - cropSize - cropY;
           cropX = 0;
         }
@@ -220,17 +204,6 @@ const ImageModifier = () => {
           cropX = 0;
         }
       }
-
-      console.log(
-        "X: ",
-        cropX,
-        "Y :",
-        cropY,
-        "Width: ",
-        currentEditedImage.width,
-        "Height: ",
-        currentEditedImage.height
-      );
 
       const result = await ImageManipulator.manipulateAsync(
         currentEditedImage?.uri,
@@ -253,7 +226,6 @@ const ImageModifier = () => {
         { format: ImageManipulator.SaveFormat.JPEG }
       );
 
-      console.log("Succesfuly applied crop");
       return result.uri;
     } catch (ex) {
       console.error("Error while cropping image: ", ex);
@@ -278,15 +250,12 @@ const ImageModifier = () => {
           throw new Error("no cropped image source found");
         }
 
-        console.log("[ImageModifier] Finalizing cropped images...");
         setWindowOpen(false);
         setHidden(false);
         setImages({
           edited: true,
           uris: [...croppedUris, croppedUri],
         });
-
-        console.log("[ImageModifier] Successfully modified images");
       } else {
         editImage(currentEditedImage.index + 1);
       }
@@ -329,7 +298,6 @@ const ImageModifier = () => {
     const getImages = async () => {
       if (!images || images.uris.length === 0 || images.edited) return;
 
-      console.log("[imageModifier.tsx] Loading images...");
       setWindowOpen(true);
       setHidden(true);
       editImage(0);
