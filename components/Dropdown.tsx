@@ -10,9 +10,9 @@ import {
   ImageSourcePropType,
 } from "react-native";
 
-interface categoryI {
-  image: ImageSourcePropType;
+interface categoriesI {
   value: string;
+  image: string;
   label: string;
 }
 
@@ -25,26 +25,26 @@ interface propsI {
   optionItemStyle?: Record<string, any>;
   optionItemTextStyle?: Record<string, any>;
   separatorStyle?: Record<string, any>;
-  OnSelected?: (selected: categoryI) => void;
+  OnSelected?: (index: number) => void;
   image?: string;
   labelText?: string;
-  data: categoryI[];
+  data: categoriesI[];
 }
 
 const Dropdown = (props: propsI) => {
   const [expanded, setExpanded] = useState(false);
-  const [selectedElement, selectElement] = useState(props.data[0]);
+  const [selectedIndex, selectIndex] = useState(0);
 
   const dropdownHandler = () => {
     setExpanded(!expanded);
   };
 
-  const selectHandler = (element: categoryI) => {
+  const selectHandler = (index: number) => {
     if (props.OnSelected) {
-      props.OnSelected(element);
+      props.OnSelected(index);
     }
 
-    selectElement(element);
+    selectIndex(index);
     setExpanded(false);
   };
 
@@ -61,9 +61,9 @@ const Dropdown = (props: propsI) => {
       >
         <Image
           style={{ ...DropdownStyles.icon, ...props.iconStyle }}
-          source={selectedElement.image}
+          source={props.data[selectedIndex].image as ImageSourcePropType}
         />
-        <Text>{selectedElement.value}</Text>
+        <Text>{props.data[selectedIndex].value}</Text>
       </TouchableOpacity>
       {expanded ? (
         <ScrollView
@@ -71,7 +71,7 @@ const Dropdown = (props: propsI) => {
           style={{ ...DropdownStyles.options, ...props.optionsStyle }}
         >
           <FlatList
-            keyExtractor={(item) => item.value}
+            keyExtractor={(item, index) => props.data[index].value}
             data={props.data}
             renderItem={({ item, index }) => (
               <TouchableOpacity
@@ -79,12 +79,12 @@ const Dropdown = (props: propsI) => {
                   ...DropdownStyles.optionItem,
                   ...props.optionItemStyle,
                 }}
-                onPress={() => selectHandler(item)}
+                onPress={() => selectHandler(index)}
                 key={index}
               >
                 <Image
                   style={{ ...DropdownStyles.icon, ...props.iconStyle }}
-                  source={item.image}
+                  source={props.data[index].image as ImageSourcePropType}
                 />
                 <Text
                   style={{
@@ -92,7 +92,7 @@ const Dropdown = (props: propsI) => {
                     ...props.optionItemTextStyle,
                   }}
                 >
-                  {item.value}
+                  {props.data[index].value}
                 </Text>
               </TouchableOpacity>
             )}

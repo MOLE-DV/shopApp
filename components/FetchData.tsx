@@ -4,6 +4,7 @@ import { query, limit, collection, getDocs } from "firebase/firestore";
 import { getStorage, ref, getDownloadURL } from "firebase/storage";
 
 import Constants from "expo-constants";
+import { ImageSourcePropType } from "react-native";
 
 const DEFAULT_IMAGE_URL = `https://firebasestorage.googleapis.com/v0/b/shopapplication-57342.appspot.com/o/images%2Fdefault.jpeg?alt=media&token=644adfe7-b744-4f80-a9d7-6604b47e27b6`;
 
@@ -12,6 +13,7 @@ interface Item {
   title: string;
   description: string;
   icon: string;
+  categoryIndex: number;
   price: string;
 }
 
@@ -19,8 +21,6 @@ const Fetch = async () => {
   let items: Item[] = [];
 
   try {
-    console.log("⚙️ Fetching items...");
-
     const itemQuery = query(collection(FIREBASE_DB, "items"), limit(15));
     const querySnapshot = await getDocs(itemQuery);
 
@@ -45,12 +45,10 @@ const Fetch = async () => {
     });
 
     items = await Promise.all(itemPromises);
+    return items;
   } catch (ex) {
     console.error("❌ Error fetching items:", ex);
   }
-
-  console.log(`✅ Successfully fetched ${items.length} items`);
-  return items;
 };
 
 export default Fetch;

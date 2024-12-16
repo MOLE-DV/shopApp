@@ -16,8 +16,7 @@ const CreateNewStyles = StyleSheet.create({
     padding: 10,
   },
   inputContainer: {
-    width: Dimensions.get("window").width,
-    paddingHorizontal: Dimensions.get("window").width / 10,
+    width: Dimensions.get("window").width - Dimensions.get("window").width / 20,
     marginTop: 0,
   },
   label: {
@@ -27,10 +26,9 @@ const CreateNewStyles = StyleSheet.create({
     fontFamily: "Zikketica",
   },
   input: {
-    height: 200,
     fontSize: 12,
     marginBottom: 20,
-    paddingHorizontal: 40,
+    paddingLeft: 40,
     paddingTop: 20,
     borderWidth: 1,
     borderColor: "rgb(165, 165, 165)",
@@ -42,13 +40,11 @@ const CreateNewStyles = StyleSheet.create({
     position: "absolute",
     height: 25,
     width: 25,
-    top: 45.5,
-    left: Dimensions.get("window").width / 10 + 7,
+    left: Dimensions.get("window").width / 40,
     tintColor: "rgb(165, 165, 165)",
   },
   priceInputContainer: {
-    width: Dimensions.get("window").width,
-    paddingHorizontal: Dimensions.get("window").width / 10,
+    width: Dimensions.get("window").width - Dimensions.get("window").width / 20,
     marginTop: 0,
   },
   priceLabel: {
@@ -68,9 +64,7 @@ const CreateNewStyles = StyleSheet.create({
     fontFamily: "Zikketica",
   },
   ListButton: {
-    width:
-      Dimensions.get("window").width -
-      (2 * Dimensions.get("window").width) / 10.2,
+    width: Dimensions.get("window").width - Dimensions.get("window").width / 20,
     position: "relative",
   },
 });

@@ -6,9 +6,10 @@ import {
   TouchableOpacity,
   Image,
   FlatList,
-  ActivityIndicator,
   NativeSyntheticEvent,
   NativeScrollEvent,
+  View,
+  ImageSourcePropType,
 } from "react-native";
 import { RelativePathString, router } from "expo-router";
 import { useState, useEffect, useRef } from "react";
@@ -17,17 +18,20 @@ import GlobalStyles from "../styles/GlobalStyles";
 import MainStyles from "../styles/Main/MainStyles";
 
 import Fetch from "../components/FetchData";
+import categories from "@/assets/categories";
+import { useApp } from "@/contexts/AppContext";
 
 interface Item {
   id: string;
   title: string;
   description: string;
   icon: string;
+  categoryIndex: number;
   price: string;
 }
 export default function App() {
   const [data, setData] = useState<Item[]>([]);
-  const [loaded, setLoaded] = useState(false);
+  const { setLoading, setHidden } = useApp();
   let lastScroll = 0;
 
   const fadeAnimation = useRef(new Animated.Value(0)).current;
@@ -51,11 +55,14 @@ export default function App() {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
+      setHidden(true);
       const items = await Fetch();
       if (items) {
         setData(items);
-        setLoaded(true);
       }
+      setLoading(false);
+      setHidden(false);
     };
     fetchData();
   }, []);
@@ -74,12 +81,6 @@ export default function App() {
 
   return (
     <SafeAreaView style={GlobalStyles.androidSafeArea}>
-      <ActivityIndicator
-        size="large"
-        style={GlobalStyles.activityIndicator}
-        color="rgb(105, 64, 255)"
-        animating={!loaded}
-      />
       <Animated.View
         style={{
           ...MainStyles.searchBarContainer,
@@ -117,6 +118,7 @@ export default function App() {
                     title: item.title,
                     price: item.price,
                     icon: item.icon,
+                    categoryIndex: item.categoryIndex,
                     description: item.description,
                   },
                 })
@@ -126,11 +128,29 @@ export default function App() {
                 style={MainStyles.listItemIcon}
                 source={{ uri: item.icon }}
               />
-              <Text style={MainStyles.listItemText}>
-                {item.title}
-                {"\n"}
-                <Text style={MainStyles.listItemTextPrice}>{item.price}$</Text>
-              </Text>
+              <View style={MainStyles.listItemInfo}>
+                <Text style={MainStyles.listItemTitle}>{item.title}</Text>
+                <View style={MainStyles.listItemDetails}>
+                  <Text
+                    style={[
+                      MainStyles.listItemTextPrice,
+                      { fontSize: 15 - 0.01 * item.price.length },
+                    ]}
+                  >
+                    {new Intl.NumberFormat("de-DE", {
+                      style: "currency",
+                      currency: "EUR",
+                    }).format(Number(item.price))}
+                  </Text>
+                  <Image
+                    style={MainStyles.listItemCategory}
+                    source={
+                      categories[Number(item.categoryIndex)]
+                        .image as ImageSourcePropType
+                    }
+                  />
+                </View>
+              </View>
             </TouchableOpacity>
           );
         }}

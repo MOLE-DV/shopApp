@@ -2,17 +2,13 @@ import { StyleSheet, Dimensions } from "react-native";
 
 const TextInputIconStyles = StyleSheet.create({
   inputContainer: {
-    width: Dimensions.get("window").width,
-    paddingHorizontal: Dimensions.get("window").width / 10,
     marginTop: 0,
-    alignItems: "center",
   },
   label: {
     fontSize: 15,
     marginBottom: 10,
     color: "black",
     fontFamily: "Zikketica",
-    alignSelf: "left",
   },
   input: {
     height: 50,
@@ -36,6 +32,7 @@ const TextInputIconStyles = StyleSheet.create({
     backgroundColor: "rgb(165, 165, 165)",
     bottom: 20,
     position: "absolute",
+    left: 18,
   },
 });
 

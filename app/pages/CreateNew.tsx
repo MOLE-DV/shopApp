@@ -1,4 +1,4 @@
-import { ImageSourcePropType, View } from "react-native";
+import { Alert, ImageSourcePropType, View } from "react-native";
 
 import { useState } from "react";
 import { router } from "expo-router";
@@ -21,7 +21,7 @@ import { getStorage, ref, uploadBytes, uploadString } from "firebase/storage";
 interface formDataI {
   title: string;
   description: string;
-  category: string;
+  categoryIndex: number;
   images: string[];
   price: string;
 }
@@ -35,7 +35,7 @@ export default function CreateNew() {
     title: "",
     description: "",
     images: [],
-    category: "Electronics",
+    categoryIndex: 0,
     price: "",
   });
 
@@ -43,20 +43,31 @@ export default function CreateNew() {
     let price = text.replace(/[^0-9.]/g, "");
     price = price.replace(/(\..*)\./g, "$1");
 
+    console.log(price);
     inputChange(price, "price");
     setPrice(price);
   };
 
   async function applyForm() {
     try {
+      console.log("Price: ", parseFloat(price), price);
       if (
         formData.title.trim().length === 0 ||
         formData.description.trim().length === 0 ||
-        formData.category === "" ||
-        parseFloat(price) <= 0 ||
+        Number(price) < 1 ||
+        isNaN(Number(price)) ||
         formData.images.length === 0
-      )
+      ) {
+        if (Number(price) < 1) {
+          Alert.alert("Couldn't list item", "Minimum selling price is 1 euro!");
+        } else {
+          Alert.alert(
+            "Couldn't list item",
+            "Please fill all the fields before listing!"
+          );
+        }
         return;
+      }
 
       setLoading(true);
       setHidden(true);
@@ -64,10 +75,12 @@ export default function CreateNew() {
       const storage = getStorage();
       const collectionRef = collection(FIREBASE_DB, "items");
 
+      console.log(formData.categoryIndex);
+
       const docRef = await addDoc(collectionRef, {
         title: formData.title,
         description: formData.description,
-        category: formData.category,
+        categoryIndex: formData.categoryIndex,
         price: formData.price,
       });
 
@@ -92,16 +105,16 @@ export default function CreateNew() {
 
       console.log("finished uploading");
       await Promise.all(uploadPromises);
+      router.back();
     } catch (ex) {
       console.log("There was an error while listing item: ", ex);
     } finally {
       setHidden(false);
       setLoading(false);
-      router.back();
     }
   }
 
-  const inputChange = (value: string | string[], name: string) => {
+  const inputChange = (value: string | number, name: string) => {
     setFormData({ ...formData, [name]: value });
   };
 
@@ -130,41 +143,51 @@ export default function CreateNew() {
             <TextInputIcon
               placeholder="etc. white T-shirt"
               labelText="Title"
+              containerStyle={[CreateNewStyles.inputContainer]}
+              labelStyle={CreateNewStyles.label}
+              iconStyle={CreateNewStyles.inputIcon}
+              inputStyle={CreateNewStyles.input}
               image={require("../../assets/icons/png/pen.png")}
               onChangeText={(text: string) => inputChange(text, "title")}
             />
             <TextInputIcon
-              placeholder="White T-shirt, worn only once. In good condition."
+              placeholder="White T-shirt, worn only once."
               labelText="Description"
               containerStyle={CreateNewStyles.inputContainer}
               labelStyle={CreateNewStyles.label}
               iconStyle={CreateNewStyles.inputIcon}
-              inputStyle={CreateNewStyles.input}
+              inputStyle={[
+                CreateNewStyles.input,
+                {
+                  height:
+                    52 + (formData.description.match(/\n/g) || []).length * 12,
+                },
+              ]}
               image={require("../../assets/icons/png/description.png")}
               multiline={true}
               dividerVisible={false}
               onChangeText={(text: string) => inputChange(text, "description")}
             />
             <TextInputIcon
-              placeholder="4.99$"
+              placeholder="0 €"
               labelText="Price"
               containerStyle={CreateNewStyles.priceInputContainer}
               labelStyle={CreateNewStyles.priceLabel}
               inputStyle={CreateNewStyles.priceInput}
+              iconStyle={CreateNewStyles.inputIcon}
               onChangeText={priceInputHandler}
               image={require("../../assets/icons/png/description.png")}
               value={price}
               keyboardType="numeric"
+              maxLength={13}
+              dividerVisible={false}
             />
             <Dropdown
               labelText="Category"
               data={categories}
               image={require("../../assets/icons/png/catalog.png")}
-              OnSelected={(selected: {
-                value: string;
-                label: string;
-                image: ImageSourcePropType;
-              }) => inputChange(selected.value, "category")}
+              OnSelected={(index) => inputChange(index, "categoryIndex")}
+              dropdownStyle={CreateNewStyles.priceInputContainer}
             />
             <CustomButton
               Text="List Item"

@@ -4,11 +4,19 @@ import {
   Platform,
   ScrollView,
 } from "react-native";
-import GlobalStyles from "@/styles/GlobalStyles";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import { Keyboard } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-const KeyboardAvoidingContainer = ({ children }: React.PropsWithChildren) => {
+interface propsI {
+  children?: ReactNode;
+  NavBarPadding?: boolean;
+}
+
+const KeyboardAvoidingContainer: React.FC<propsI> = ({
+  children,
+  NavBarPadding = true,
+}) => {
   let headerPadding = 80;
   let bottomPadding = 70;
   const [padding, setPadding] = useState(headerPadding);
@@ -35,9 +43,12 @@ const KeyboardAvoidingContainer = ({ children }: React.PropsWithChildren) => {
     <SafeAreaView
       style={{
         flex: 1,
-        marginTop: 35,
+        marginTop: NavBarPadding
+          ? Platform.OS === "ios"
+            ? 20
+            : useSafeAreaInsets().top
+          : 0,
         paddingBottom: padding,
-        backgroundColor: "white",
       }}
     >
       <KeyboardAvoidingView
@@ -45,6 +56,7 @@ const KeyboardAvoidingContainer = ({ children }: React.PropsWithChildren) => {
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
         <ScrollView
+          bounces={false}
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             alignItems: "center",

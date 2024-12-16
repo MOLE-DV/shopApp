@@ -8,7 +8,7 @@ export default StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
-    marginTop: 35,
+    marginTop: 50,
     zIndex: 1,
   },
   searchBarInputContainer: {
@@ -41,6 +41,7 @@ export default StyleSheet.create({
     justifyContent: "center",
     flexGrow: 1,
     alignItems: "center",
+    gap: 10,
   },
   columnWrapperContainer: {
     gap: 5,
@@ -55,19 +56,36 @@ export default StyleSheet.create({
     display: "flex",
     justifyContent: "flex-end",
     overflow: "hidden",
+    width: Dimensions.get("window").width / 2 - 10,
   },
-  listItemText: {
-    color: "black",
+  listItemInfo: {
     width: "100%",
     backgroundColor: "white",
-    padding: 10,
-    fontSize: 15,
+    gap: 5,
   },
   listItemTextPrice: {
+    fontSize: 15,
     color: "rgb(105, 64, 255)",
   },
   listItemIcon: {
     width: Dimensions.get("window").width / 2 - 10,
     height: Dimensions.get("window").width / 2 - 10,
+  },
+  listItemCategory: {
+    tintColor: "rgba(105, 64, 255, .72)",
+    height: 25,
+    width: 25,
+    marginRight: 5,
+  },
+  listItemDetails: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  listItemTitle: {
+    color: "rgb(105, 64, 255)",
+    fontWeight: "bold",
+    fontSize: 14,
+    marginTop: 5,
   },
 });

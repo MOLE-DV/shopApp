@@ -7,6 +7,7 @@ import ImageButton from "./ImageButton";
 import MaskedView from "@react-native-masked-view/masked-view";
 import { useImagesContext } from "@/contexts/ImagesContext";
 import imagesI from "@/interfaces/imagesInterface";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const ImageModifier = () => {
   const { setHidden, setLoading } = useApp();
@@ -53,13 +54,14 @@ const ImageModifier = () => {
       );
 
       //podmień url aktualnego edytowanego zdjęcia na url tego obróconego oraz zapisz z jaką rotacją zostało obrócone
+
+      if (result.uri === "") throw new Error("Result is an empty source");
+
       setCurrentEditedImage({
         ...currentEditedImage,
-        uri: result.uri !== "" ? result.uri : undefined,
+        uri: result.uri,
         rotation: currentEditedImage.rotation + rotation,
       });
-
-      const rotNum = ((currentEditedImage.rotation + rotation) / 180) % 2;
     } catch (ex) {
       console.error("Error rotating image: ", ex);
     }
@@ -126,6 +128,8 @@ const ImageModifier = () => {
     index: number
   ): Promise<{ height: number; width: number; uri: string } | false> => {
     try {
+      if (!images) throw new Error("Images are undefined");
+
       const image = images.uris[index];
       if (!image) return false;
 
@@ -144,8 +148,8 @@ const ImageModifier = () => {
 
       const aspectRatio = horizontal ? width / height : height / width;
 
-      const imageHeight = horizontal ? 500 : 500 * aspectRatio;
-      const imageWidth = !horizontal ? 500 : 500 * aspectRatio;
+      const imageHeight = horizontal ? 1000 : 1000 * aspectRatio;
+      const imageWidth = !horizontal ? 1000 : 1000 * aspectRatio;
 
       const result = await ImageManipulator.manipulateAsync(image, [
         {
@@ -270,13 +274,18 @@ const ImageModifier = () => {
       | { height: number; width: number; uri: string }
       | false;
 
-    if (resizedImage && typeof resizedImage !== "boolean") {
+    if (
+      resizedImage &&
+      typeof resizedImage !== "boolean" &&
+      images &&
+      resizedImage.uri !== ""
+    ) {
       const aspectRatio = resizedImage.width / resizedImage.height;
 
       setCurrentEditedImage({
         index: index,
         orgUri: images.uris[index],
-        uri: resizedImage.uri !== "" ? resizedImage.uri : undefined,
+        uri: resizedImage.uri,
         aspectRatio,
         rotation: 0,
         height: resizedImage.height,
@@ -310,7 +319,15 @@ const ImageModifier = () => {
   return (
     <View
       style={
-        windowOpen ? { ...ImageModifierStyles.container } : { display: "none" }
+        windowOpen
+          ? [
+              ImageModifierStyles.container,
+              {
+                height:
+                  Dimensions.get("window").height + useSafeAreaInsets().top,
+              },
+            ]
+          : { display: "none" }
       }
     >
       <View>

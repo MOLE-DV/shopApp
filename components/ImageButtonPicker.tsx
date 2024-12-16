@@ -33,7 +33,7 @@ const ImageButtonPicker = (props: propsI) => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ["images"] as unknown as ImagePicker.MediaType,
       selectionLimit: 5 - (images ? images.uris.length : 0),
-      quality: 0.75,
+      quality: 0.8,
       allowsMultipleSelection: true,
     });
 
@@ -51,7 +51,6 @@ const ImageButtonPicker = (props: propsI) => {
   useEffect(() => {
     if (!images?.edited || !props.OnSelected) return;
     props.OnSelected(images.uris);
-    console.log("testesade");
   }, [images?.edited]);
 
   const scrollManager = (e: any) => {

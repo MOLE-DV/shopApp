@@ -1,16 +1,6 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { useFocusEffect } from "expo-router";
-import {
-  SafeAreaView,
-  Text,
-  View,
-  ScrollView,
-  ImageBackground,
-  NativeSyntheticEvent,
-  NativeScrollEvent,
-  Animated,
-  Alert,
-} from "react-native";
+import { Image, Text, View } from "react-native";
 import * as SecureStore from "expo-secure-store";
 
 import { useLocalSearchParams } from "expo-router";
@@ -18,7 +8,6 @@ import { router } from "expo-router";
 
 import ImageButton from "../../../components/ImageButton";
 
-import GlobalStyles from "../../../styles/GlobalStyles";
 import ItemsStyles from "../../../styles/Items/ItemsStyles";
 import {
   Fetch,
@@ -26,6 +15,7 @@ import {
   removeFromFavorites,
 } from "@/components/FavoritesManager";
 import KeyboardAvoidingContainer from "@/components/KeyboardAvoidingContainer";
+import categories from "@/assets/categories";
 
 interface User {
   loggedIn: boolean;
@@ -34,7 +24,9 @@ interface User {
 }
 
 export default function Item() {
-  const { itemId, title, icon, price, description } = useLocalSearchParams();
+  let { itemId, title, icon, price, categoryIndex, description } =
+    useLocalSearchParams();
+
   const [user, setUser] = useState<User>({
     loggedIn: false,
     email: null,
@@ -95,7 +87,7 @@ export default function Item() {
     }
   };
   return (
-    <>
+    <View style={{ flex: 1, position: "relative", backgroundColor: "white" }}>
       <View style={ItemsStyles.topNavBar}>
         <ImageButton
           style={ItemsStyles.topNavBarIcon}
@@ -108,22 +100,34 @@ export default function Item() {
           onPress={favoriteButtonHandler}
         />
       </View>
-      <ImageBackground style={ItemsStyles.icon} source={{ uri: changedIcon }}>
-        <Text style={ItemsStyles.title}>{title}</Text>
-      </ImageBackground>
-      <KeyboardAvoidingContainer>
+      <Image style={ItemsStyles.icon} source={{ uri: changedIcon }} />
+      <KeyboardAvoidingContainer NavBarPadding={false}>
         <View style={ItemsStyles.info}>
-          <Text style={ItemsStyles.button}>{price}$</Text>
-          <ImageButton
-            image={require("../../../assets/icons/png/cart.png")}
-            style={ItemsStyles.buttonIcon}
-            buttonStyle={ItemsStyles.button}
-          />
-          <ImageButton
-            image={require("../../../assets/icons/png/mail.png")}
-            style={ItemsStyles.buttonIcon}
-            buttonStyle={ItemsStyles.button}
-          />
+          <View style={ItemsStyles.infoLeft}>
+            <Text style={ItemsStyles.title}>{title}</Text>
+            <Text
+              style={[ItemsStyles.price, { fontSize: 25 - 0.5 * price.length }]}
+            >
+              {new Intl.NumberFormat("de-DE", {
+                style: "currency",
+                currency: "EUR",
+              }).format(Number(price))}
+            </Text>
+          </View>
+          <View style={ItemsStyles.infoRight}>
+            <Text style={ItemsStyles.categoryLabel}>Category:</Text>
+            <View
+              style={{ flexDirection: "row", gap: 5, alignItems: "center" }}
+            >
+              <Image
+                style={ItemsStyles.categoryIcon}
+                source={categories[Number(categoryIndex)].image}
+              />
+              <Text style={ItemsStyles.category}>
+                {categories[Number(categoryIndex)].value}
+              </Text>
+            </View>
+          </View>
         </View>
         <View style={ItemsStyles.descriptionBackground}>
           <View style={ItemsStyles.description}>
@@ -131,6 +135,6 @@ export default function Item() {
           </View>
         </View>
       </KeyboardAvoidingContainer>
-    </>
+    </View>
   );
 }
